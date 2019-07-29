@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:paddingTop="20dp"
-    android:layout_height="80dp"
-    android:id="@+id/include_title"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorAccent">
+    android:id="@+id/include_title"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/colorAccent"
+    android:paddingTop="20dp">
+
     <ImageView
         android:id="@+id/iv_back"
         android:layout_width="40dp"
         android:layout_height="match_parent"
-        android:src="@mipmap/icon_back"/>
+        android:paddingLeft="15dp"
+        android:src="@drawable/toolbar_back" />
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        tools:text="标题"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        tools:text="标题" />
 </android.support.constraint.ConstraintLayout>

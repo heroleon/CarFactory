@@ -51,7 +51,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
         //初始化ButterKnife
         ButterKnife.bind(this);
         initPresenter(getIntent());
-        //checkPresenterIsNull();
+        checkPresenterIsNull();
         initView();
     }
 

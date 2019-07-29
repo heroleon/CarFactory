@@ -1,0 +1,34 @@
+[
+  {
+    "sort": "0",
+    "title": "姓\u3000\u3000名",
+    "must": "true",
+    "inputType": "1",
+    "maxLength": "10",
+    "hint": "请输入"
+  },
+  {
+    "sort": "1",
+    "title": "出生日期",
+    "must": "true",
+    "inputType": "2",
+    "maxLength": "10",
+    "hint": "请输入"
+  },
+  {
+    "sort": "2",
+    "title": "手机号码",
+    "must": "true",
+    "inputType": "2",
+    "maxLength": "11",
+    "hint": "请输入"
+  },
+  {
+    "sort": "3",
+    "title": "户籍地址",
+    "must": "true",
+    "inputType": "1",
+    "maxLength": "20",
+    "hint": "请输入"
+  }
+]

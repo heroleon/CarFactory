@@ -24,6 +24,7 @@
         android:src="@mipmap/icon_must" />
 
     <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/et_content"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:paddingLeft="10dp"

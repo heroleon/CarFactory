@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -23,10 +24,15 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.leon.carfixfactory.MyApplication;
 import com.leon.carfixfactory.R;
+import com.leon.carfixfactory.bean.WorkerInfo;
 import com.leon.carfixfactory.ui.activity.AddWorkerActivity;
 import com.leon.carfixfactory.utils.DisplayUtil;
+import com.leon.carfixfactory.utils.ZToast;
 import com.ms_square.etsyblur.BlurringView;
+
+import java.util.List;
 
 public class MoreWindow extends PopupWindow implements OnClickListener {
 
@@ -58,6 +64,8 @@ public class MoreWindow extends PopupWindow implements OnClickListener {
         mContext.getWindowManager().getDefaultDisplay()
                 .getMetrics(metrics);
         mWidth = metrics.widthPixels;
+        int statusHEIGHT = getStatusBarHeight(mContext);
+        int navarBar = getNavigationBarHeight(mContext);
         mHeight = metrics.heightPixels;
 
         setWidth(mWidth);
@@ -86,6 +94,17 @@ public class MoreWindow extends PopupWindow implements OnClickListener {
         setOutsideTouchable(true);
         setFocusable(true);
         setClippingEnabled(false);//使popupwindow全屏显示
+    }
+    /**
+     * 获取状态栏高度
+     * @param context
+     * @return
+     */
+    public  int getStatusBarHeight(Context context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        return height;
     }
 
     public int getNavigationBarHeight(Activity activity) {
@@ -230,6 +249,8 @@ public class MoreWindow extends PopupWindow implements OnClickListener {
                 mContext.startActivity(intent);
                 break;
             case R.id.tv_search:
+                List<WorkerInfo> workerInfos = MyApplication.getApplication().getDaoSession().loadAll(WorkerInfo.class);
+                ZToast.makeText(mContext,workerInfos.get(0).workerName+workerInfos.get(0).workerPhone,1000).show();
                 break;
             case R.id.tv_course:
                 break;

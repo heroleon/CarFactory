@@ -4,16 +4,73 @@
     android:layout_height="match_parent"
     android:background="@color/colorCommonBg"
     android:divider="@drawable/shape_space_line"
-    android:showDividers="middle"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:showDividers="middle">
 
     <include layout="@layout/include_title" />
 
-    <include layout="@layout/include_content_edit" />
+    <RelativeLayout
+        android:id="@+id/rl_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorWhite"
+        android:paddingLeft="15dp">
 
-    <include layout="@layout/include_content_edit" />
+        <TextView
+            android:id="@+id/tv_worker_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/user_img"
+            android:textColor="@color/colorTxtColor"
+            android:textSize="16sp" />
 
-    <include layout="@layout/include_content_edit" />
+        <ImageView
+            android:id="@+id/iv_necessary_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tv_worker_img"
+            android:layout_toRightOf="@id/tv_worker_img"
+            android:paddingBottom="10dp"
+            android:src="@mipmap/icon_must" />
 
-    <include layout="@layout/include_content_edit" />
+        <ImageView
+            android:id="@+id/iv_worker_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/icon_default_avatar" />
+
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/ll_name"
+        layout="@layout/include_content_edit" />
+
+    <include
+        android:id="@+id/ll_birthday"
+        layout="@layout/include_content_edit" />
+
+    <include
+        android:id="@+id/ll_phone"
+        layout="@layout/include_content_edit" />
+
+    <include
+        android:id="@+id/ll_address"
+        layout="@layout/include_content_edit" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/btn_confirm_shape"
+        android:text="@string/confirm"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp" />
 </LinearLayout>
