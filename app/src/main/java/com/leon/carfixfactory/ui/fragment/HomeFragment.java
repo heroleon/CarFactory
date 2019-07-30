@@ -1,9 +1,20 @@
 package com.leon.carfixfactory.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.leon.carfixfactory.R;
+import com.leon.carfixfactory.bean.HomeData;
+import com.leon.carfixfactory.contract.HomeContact;
+import com.leon.carfixfactory.presenter.AddWorkerImp;
+import com.leon.carfixfactory.presenter.HomeDataPresenterImp;
+import com.leon.carfixfactory.ui.adapter.HomeAdapter;
+import com.leon.carfixfactory.ui.custom.NoScrollGridLayoutManager;
+
+import java.util.List;
+
+import butterknife.Bind;
 
 /**
  * Created by leon
@@ -11,20 +22,46 @@ import com.leon.carfixfactory.R;
  * Time: 9:47
  * Desc: 首页
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements HomeContact.ViewHome {
+    @Bind(R.id.home_recycler_view)
+    RecyclerView mRecyclerView;
+    private HomeAdapter mAdapter;
 
     @Override
     protected void initPresenter() {
-
+        mPresenter = new HomeDataPresenterImp(getActivity(), this);
     }
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        initRecyclerView();
+        mPresenter.getHomeData("itemHomeData.json");
+    }
 
+    private void initRecyclerView() {
+        NoScrollGridLayoutManager layoutManager = new NoScrollGridLayoutManager(getActivity(),3);
+        layoutManager.setScrollEnabled(false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mAdapter = new HomeAdapter(mActivity,R.layout.item_home_data);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_home;
+    }
+
+    @Override
+    public void getHomeDataSuccess(List<HomeData> responses) {
+        if(responses!=null&&responses.size()!=0){
+            mAdapter.updateWithClear(responses);
+        }else {
+            ShowToast("未取到数据");
+        }
+    }
+
+    @Override
+    public void ShowToast(String t) {
+        showToast(t);
     }
 }

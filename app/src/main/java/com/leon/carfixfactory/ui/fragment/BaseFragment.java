@@ -48,7 +48,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
         View view = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, view);
         initPresenter();
-        //checkPresenterIsNull();
+        checkPresenterIsNull();
         initView(view, savedInstanceState);
         return view;
     }
@@ -61,6 +61,5 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
 
     public void showToast(String text){
         ZToast.makeText(mActivity, text,1000).show();
-        //Toast.makeText(mActivity, text, Toast.LENGTH_SHORT).show();
     }
 }
