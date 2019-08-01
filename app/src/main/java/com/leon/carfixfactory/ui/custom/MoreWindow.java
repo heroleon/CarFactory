@@ -249,8 +249,8 @@ public class MoreWindow extends PopupWindow implements OnClickListener {
                 mContext.startActivity(intent);
                 break;
             case R.id.tv_search:
-                List<WorkerInfo> workerInfos = MyApplication.getApplication().getDaoSession().loadAll(WorkerInfo.class);
-                ZToast.makeText(mContext,workerInfos.get(0).workerName+workerInfos.get(0).workerPhone,1000).show();
+                //List<WorkerInfo> workerInfos = MyApplication.getApplication().getDaoSession().loadAll(WorkerInfo.class);
+               // ZToast.makeText(mContext,workerInfos.get(0).workerName+workerInfos.get(0).workerPhone,1000).show();
                 break;
             case R.id.tv_course:
                 break;

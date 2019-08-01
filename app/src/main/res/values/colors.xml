@@ -11,6 +11,7 @@
     <color name="colorBgDark">#f4f4f4</color>
     <color name="colorTxtColor">#333333</color>
     <color name="colorTextBlack">#666666</color>
+    <color name="colorTextGray">#999999</color>
     <color name="colorTextLight">#d1d1d1</color>
     <color name="colorTrans">#00000000</color>
     <color name="colorBottom">#e2e2e2</color>

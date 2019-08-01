@@ -17,7 +17,7 @@ public interface HomeContact {
         void getHomeDataSuccess(List<HomeData> responses);
     }
 
-    interface IHomePresenetr {
+    interface IHomePresenter {
         void getHomeData(String fileName);
     }
 }

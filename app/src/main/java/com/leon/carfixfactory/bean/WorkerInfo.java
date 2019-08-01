@@ -12,15 +12,15 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class WorkerInfo {
     @Id(autoincrement = true)
-    public long workerId;
+    public Long workerId;
     public String avatarPath;
     public String workerName;
     public String workerBirthDay;
     public String workerPhone;
     public String workerAddress;
 
-    @Generated(hash = 1793834727)
-    public WorkerInfo(long workerId, String avatarPath, String workerName,
+    @Generated(hash = 1707038715)
+    public WorkerInfo(Long workerId, String avatarPath, String workerName,
             String workerBirthDay, String workerPhone, String workerAddress) {
         this.workerId = workerId;
         this.avatarPath = avatarPath;
@@ -66,13 +66,10 @@ public class WorkerInfo {
         this.workerAddress = workerAddress;
     }
 
-    public long getWorkerId() {
+    public Long getWorkerId() {
         return this.workerId;
     }
 
-    public void setWorkerId(long workerId) {
-        this.workerId = workerId;
-    }
 
     public String checkData(Context context) {
         if (TextUtils.isEmpty(avatarPath)) {
@@ -99,5 +96,9 @@ public class WorkerInfo {
 
     public void setAvatarPath(String avatarPath) {
         this.avatarPath = avatarPath;
+    }
+
+    public void setWorkerId(Long workerId) {
+        this.workerId = workerId;
     }
 }

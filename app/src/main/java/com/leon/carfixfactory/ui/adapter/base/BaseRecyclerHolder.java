@@ -26,7 +26,7 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> views;
     private Context context;
 
-    private BaseRecyclerHolder(Context context,View itemView) {
+    private BaseRecyclerHolder(Context context, View itemView) {
         super(itemView);
         this.context = context;
         //指定一个初始为8
@@ -35,29 +35,31 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
 
     /**
      * 取得一个RecyclerHolder对象
-     * @param context 上下文
+     *
+     * @param context  上下文
      * @param itemView 子项
      * @return 返回一个RecyclerHolder对象
      */
-    public static BaseRecyclerHolder getRecyclerHolder(Context context,View itemView){
-        return new BaseRecyclerHolder(context,itemView);
+    public static BaseRecyclerHolder getRecyclerHolder(Context context, View itemView) {
+        return new BaseRecyclerHolder(context, itemView);
     }
 
-    public SparseArray<View> getViews(){
+    public SparseArray<View> getViews() {
         return this.views;
     }
 
     /**
      * 通过view的id获取对应的控件，如果没有则加入views中
+     *
      * @param viewId 控件的id
      * @return 返回一个控件
      */
     @SuppressWarnings("unchecked")
-    public <T extends View> T getView(int viewId){
+    public <T extends View> T getView(int viewId) {
         View view = views.get(viewId);
-        if (view == null ){
+        if (view == null) {
             view = itemView.findViewById(viewId);
-            views.put(viewId,view);
+            views.put(viewId, view);
         }
         return (T) view;
     }
@@ -65,22 +67,22 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
     /**
      * 设置字符串
      */
-    public BaseRecyclerHolder setText(int viewId,String text){
+    public BaseRecyclerHolder setText(int viewId, String text) {
         TextView tv = getView(viewId);
-        if(text==null){
+        if (text == null) {
             tv.setVisibility(View.GONE);
-        }else{
+        } else {
             tv.setVisibility(View.VISIBLE);
             tv.setText(text);
         }
         return this;
     }
 
-    public BaseRecyclerHolder setHtmlText(int viewId,String text){
+    public BaseRecyclerHolder setHtmlText(int viewId, String text) {
         TextView tv = getView(viewId);
-        if(text==null){
+        if (text == null) {
             tv.setVisibility(View.GONE);
-        }else{
+        } else {
             tv.setText(Html.fromHtml(text));
         }
         return this;
@@ -89,7 +91,7 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
     /**
      * 设置图片
      */
-    public BaseRecyclerHolder setImageResource(int viewId,int drawableId){
+    public BaseRecyclerHolder setImageResource(int viewId, int drawableId) {
         ImageView iv = getView(viewId);
         iv.setImageResource(drawableId);
         return this;
@@ -98,7 +100,7 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
     /**
      * 设置图片
      */
-    public BaseRecyclerHolder setFrameLayoutImageResource(int viewId,int drawableId){
+    public BaseRecyclerHolder setFrameLayoutImageResource(int viewId, int drawableId) {
         FrameLayout iv = getView(viewId);
         iv.setBackgroundResource(drawableId);
         return this;
@@ -107,7 +109,7 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
     /**
      * 设置图片
      */
-    public BaseRecyclerHolder setTextViewColor(int viewId,int color){
+    public BaseRecyclerHolder setTextViewColor(int viewId, int color) {
         TextView iv = getView(viewId);
         iv.setTextColor(color);
         return this;
@@ -116,7 +118,7 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
     /**
      * 设置图片
      */
-    public BaseRecyclerHolder setImageBitmap(int viewId, Bitmap bitmap){
+    public BaseRecyclerHolder setImageBitmap(int viewId, Bitmap bitmap) {
         ImageView iv = getView(viewId);
         iv.setImageBitmap(bitmap);
         return this;
@@ -125,13 +127,22 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
     /**
      * 设置图片
      */
-    public BaseRecyclerHolder setImageByUrl(int viewId,String url){
+    public BaseRecyclerHolder setImageByUrl(int viewId, String url) {
         ImageView iv = getView(viewId);
-        GlideUtils.loadDefaultImage(context,url,iv);
+        GlideUtils.loadDefaultImage(context, url, iv);
         return this;
     }
 
-    public BaseRecyclerHolder setVisibility(int viewId,int visible) {
+    /**
+     * 设置圆形图片
+     */
+    public BaseRecyclerHolder setCircleImageByUrl(int viewId, String url) {
+        ImageView iv = getView(viewId);
+        GlideUtils.loadCenterCropCircleImage(context, url, iv);
+        return this;
+    }
+
+    public BaseRecyclerHolder setVisibility(int viewId, int visible) {
         View view = getView(viewId);
         view.setVisibility(visible);
         return this;
@@ -139,7 +150,7 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
 
     public BaseRecyclerHolder setTextViewAppearanceColor(int viewId, int resId) {
         TextView iv = getView(viewId);
-        iv.setTextAppearance(context,resId);
+        iv.setTextAppearance(context, resId);
         return this;
     }
 }

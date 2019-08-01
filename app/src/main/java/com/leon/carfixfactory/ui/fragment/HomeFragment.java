@@ -1,5 +1,6 @@
 package com.leon.carfixfactory.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,6 +10,7 @@ import com.leon.carfixfactory.bean.HomeData;
 import com.leon.carfixfactory.contract.HomeContact;
 import com.leon.carfixfactory.presenter.AddWorkerImp;
 import com.leon.carfixfactory.presenter.HomeDataPresenterImp;
+import com.leon.carfixfactory.ui.activity.WorkerManageActivity;
 import com.leon.carfixfactory.ui.adapter.HomeAdapter;
 import com.leon.carfixfactory.ui.custom.NoScrollGridLayoutManager;
 
@@ -22,7 +24,7 @@ import butterknife.Bind;
  * Time: 9:47
  * Desc: 首页
  */
-public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements HomeContact.ViewHome {
+public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements HomeContact.ViewHome, HomeAdapter.OnItemClickListener {
     @Bind(R.id.home_recycler_view)
     RecyclerView mRecyclerView;
     private HomeAdapter mAdapter;
@@ -39,11 +41,13 @@ public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements 
     }
 
     private void initRecyclerView() {
-        NoScrollGridLayoutManager layoutManager = new NoScrollGridLayoutManager(getActivity(),3);
+        NoScrollGridLayoutManager layoutManager = new NoScrollGridLayoutManager(getActivity(), 3);
         layoutManager.setScrollEnabled(false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new HomeAdapter(mActivity,R.layout.item_home_data);
+        mAdapter = new HomeAdapter(mActivity, R.layout.item_home_data);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(this);
+
     }
 
     @Override
@@ -53,9 +57,9 @@ public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements 
 
     @Override
     public void getHomeDataSuccess(List<HomeData> responses) {
-        if(responses!=null&&responses.size()!=0){
+        if (responses != null && responses.size() != 0) {
             mAdapter.updateWithClear(responses);
-        }else {
+        } else {
             ShowToast("未取到数据");
         }
     }
@@ -63,5 +67,13 @@ public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements 
     @Override
     public void ShowToast(String t) {
         showToast(t);
+    }
+
+    @Override
+    public void onItemClick(RecyclerView parent, View view, int position) {
+        if (position == 5) {
+            Intent intent = new Intent(getActivity(), WorkerManageActivity.class);
+            startActivity(intent);
+        }
     }
 }

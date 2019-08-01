@@ -5,6 +5,7 @@
     <string name="txt_purchase_record">进货记录</string>
     <string name="txt_add_worker">新增员工</string>
     <string name="title_add_worker">新增员工</string>
+    <string name="title_worker_manage">新增员工</string>
     <string name="confirm">确认</string>
     <string name="input_worker_name">请输入员工姓名</string>
     <string name="input_worker_birthday">请输入员工出生日期</string>
@@ -12,4 +13,6 @@
     <string name="input_worker_address">请输入员工户籍地址</string>
     <string name="user_img">员工头像</string>
     <string name="please_take_avatar">请对员工拍照</string>
+    <string name="notify_add_worker_success">新增员工成功</string>
+    <string name="notify_add_worker_error">新增员工失败</string>
 </resources>

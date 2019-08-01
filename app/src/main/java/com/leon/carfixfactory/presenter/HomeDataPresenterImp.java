@@ -12,7 +12,7 @@ import com.leon.carfixfactory.contract.HomeContact;
 
 import java.util.ArrayList;
 
-public class HomeDataPresenterImp extends BasePresenter<HomeContact.ViewHome> implements HomeContact.IHomePresenetr {
+public class HomeDataPresenterImp extends BasePresenter<HomeContact.ViewHome> implements HomeContact.IHomePresenter {
 
     public HomeDataPresenterImp(Activity context, HomeContact.ViewHome view) {
         super(context, view);

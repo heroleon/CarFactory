@@ -1,7 +1,7 @@
 package com.leon.carfixfactory.ui.activity;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -21,8 +21,8 @@ import com.leon.carfixfactory.utils.GlideUtils;
 import com.winfo.photoselector.PhotoSelector;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -43,6 +43,7 @@ public class AddWorkerActivity extends BaseActivity<AddWorkerImp> implements Add
     ImageView ivWorkerAvatar;
 
     private View[] views;
+    private WorkerInfo workerInfo;
 
     @Override
     protected void initPresenter(Intent intent) {
@@ -56,6 +57,7 @@ public class AddWorkerActivity extends BaseActivity<AddWorkerImp> implements Add
 
     @Override
     protected void initView() {
+        workerInfo = new WorkerInfo();
         tvTitle.setText(getString(R.string.title_add_worker));
         views = new View[]{llName, llBirthday, llPhone, llAddress};
         mPresenter.initItemData("itemAddWorker.json");
@@ -71,14 +73,24 @@ public class AddWorkerActivity extends BaseActivity<AddWorkerImp> implements Add
                 choosePhoto();
                 break;
             case R.id.btn_confirm:
-                WorkerInfo workerInfo = new WorkerInfo();
                 workerInfo.workerName = ContentViewSetting.getEditTextContent(llName);
                 workerInfo.workerBirthDay = ContentViewSetting.getEditTextContent(llBirthday);
                 workerInfo.workerPhone = ContentViewSetting.getEditTextContent(llPhone);
                 workerInfo.workerAddress = ContentViewSetting.getEditTextContent(llAddress);
                 String errNotify = workerInfo.checkData(this);
                 if (TextUtils.isEmpty(errNotify)) {
-                    MyApplication.getApplication().getDaoSession().getWorkerInfoDao().insert(workerInfo);
+                    long position = MyApplication.getApplication().getDaoSession().getWorkerInfoDao().insert(workerInfo);
+                    if (position != -1) {
+                        showToast(getString(R.string.notify_add_worker_success));
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                finish();
+                            }
+                        },500);
+                    } else {
+                        showToast(getString(R.string.notify_add_worker_error));
+                    }
                 } else {
                     showToast(errNotify);
                 }
@@ -114,9 +126,10 @@ public class AddWorkerActivity extends BaseActivity<AddWorkerImp> implements Add
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PHOTO_CODE) {
-            if(data!=null){
-                ArrayList<String> imgs =  data.getStringArrayListExtra(PhotoSelector.SELECT_RESULT);
-                GlideUtils.loadCenterCropCircleImage(this,imgs.get(0),ivWorkerAvatar);
+            if (data != null) {
+                ArrayList<String> imgs = data.getStringArrayListExtra(PhotoSelector.SELECT_RESULT);
+                workerInfo.avatarPath = imgs.get(0);
+                GlideUtils.loadCenterCropCircleImage(this, workerInfo.avatarPath, ivWorkerAvatar);
             }
         }
     }
