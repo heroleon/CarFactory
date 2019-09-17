@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Theme.Start" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--设置背景颜色-->
+        <item name="android:background">@drawable/splash</item>
+        <!-- 隐藏标题栏 -->
+        <item name="windowNoTitle">true</item>
+        <!-- 隐藏状态栏 -->
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>
