@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="Theme.Start" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.Start" parent="Theme.AppCompat.Light.NoActionBar">
         <!--设置背景颜色-->
         <item name="android:windowBackground">@drawable/icon_splash</item>
         <!-- 隐藏标题栏 -->
