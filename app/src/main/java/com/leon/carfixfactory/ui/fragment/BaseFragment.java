@@ -54,9 +54,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     }
 
     private void checkPresenterIsNull() {
-        if (mPresenter == null) {
+        /*if (mPresenter == null) {
             throw new IllegalStateException("please init mPresenter in initPresenter() method ");
-        }
+        }*/
     }
 
     public void showToast(String text){

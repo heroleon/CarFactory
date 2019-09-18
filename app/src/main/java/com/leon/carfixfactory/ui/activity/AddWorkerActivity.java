@@ -57,6 +57,7 @@ public class AddWorkerActivity extends BaseActivity<AddWorkerImp> implements Add
 
     @Override
     protected void initView() {
+
         workerInfo = new WorkerInfo();
         tvTitle.setText(getString(R.string.title_add_worker));
         views = new View[]{llName, llBirthday, llPhone, llAddress};

@@ -10,6 +10,7 @@ import com.leon.carfixfactory.bean.HomeData;
 import com.leon.carfixfactory.contract.HomeContact;
 import com.leon.carfixfactory.presenter.AddWorkerImp;
 import com.leon.carfixfactory.presenter.HomeDataPresenterImp;
+import com.leon.carfixfactory.ui.activity.MaintenanceRecordActivity;
 import com.leon.carfixfactory.ui.activity.WorkerManageActivity;
 import com.leon.carfixfactory.ui.adapter.HomeAdapter;
 import com.leon.carfixfactory.ui.custom.NoScrollGridLayoutManager;
@@ -71,9 +72,25 @@ public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements 
 
     @Override
     public void onItemClick(RecyclerView parent, View view, int position) {
-        if (position == 5) {
-            Intent intent = new Intent(getActivity(), WorkerManageActivity.class);
-            startActivity(intent);
+        Intent intent;
+        switch (position) {
+            case 0:
+                break;
+            case 1:
+                intent = new Intent(getActivity(), MaintenanceRecordActivity.class);
+                startActivity(intent);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                intent = new Intent(getActivity(), WorkerManageActivity.class);
+                startActivity(intent);
+                break;
+
         }
     }
 }

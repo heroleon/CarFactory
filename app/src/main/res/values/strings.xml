@@ -15,4 +15,6 @@
     <string name="please_take_avatar">请对员工拍照</string>
     <string name="notify_add_worker_success">新增员工成功</string>
     <string name="notify_add_worker_error">新增员工失败</string>
+    <string name="last_step">上一步</string>
+    <string name="next_step">下一步</string>
 </resources>
