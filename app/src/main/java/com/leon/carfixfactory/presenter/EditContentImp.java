@@ -1,19 +1,18 @@
 package com.leon.carfixfactory.presenter;
 
 import android.app.Activity;
-import android.content.res.AssetManager;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.leon.carfixfactory.bean.ItemEditContent;
-import com.leon.carfixfactory.contract.AddWorkerContact;
+import com.leon.carfixfactory.contract.ItemEditTextContact;
 import java.util.ArrayList;
 
-public class AddWorkerImp extends BasePresenter<AddWorkerContact.ViewAddWorker> implements AddWorkerContact.IAddWorker {
+public class EditContentImp extends BasePresenter<ItemEditTextContact.ViewEditContent> implements ItemEditTextContact.IEditContent {
 
-    public AddWorkerImp(Activity context, AddWorkerContact.ViewAddWorker view){
+    public EditContentImp(Activity context, ItemEditTextContact.ViewEditContent view){
         super(context,view);
     }
 

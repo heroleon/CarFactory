@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.leon.carfixfactory.R;
+
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -28,6 +30,7 @@ public class SplashActivity extends Activity {
             finish();
             return;
         }
+        setContentView(R.layout.activity_splash);
         toMainActivity();
     }
 

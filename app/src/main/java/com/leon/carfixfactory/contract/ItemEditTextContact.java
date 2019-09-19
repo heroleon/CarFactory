@@ -11,12 +11,12 @@ import java.util.List;
  * Time: 10:01
  * Desc:添加工人
  */
-public interface  AddWorkerContact {
+public interface ItemEditTextContact {
 
-    interface  ViewAddWorker extends IBaseView {
+    interface  ViewEditContent extends IBaseView {
         void getItemDataSuccess(List<ItemEditContent> responses);
     }
-    interface IAddWorker{
+    interface IEditContent{
         void initItemData(String fileName);
     }
 }

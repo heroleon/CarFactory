@@ -14,8 +14,8 @@ import com.leon.carfixfactory.MyApplication;
 import com.leon.carfixfactory.R;
 import com.leon.carfixfactory.bean.ItemEditContent;
 import com.leon.carfixfactory.bean.WorkerInfo;
-import com.leon.carfixfactory.contract.AddWorkerContact;
-import com.leon.carfixfactory.presenter.AddWorkerImp;
+import com.leon.carfixfactory.contract.ItemEditTextContact;
+import com.leon.carfixfactory.presenter.EditContentImp;
 import com.leon.carfixfactory.utils.ContentViewSetting;
 import com.leon.carfixfactory.utils.GlideUtils;
 import com.winfo.photoselector.PhotoSelector;
@@ -27,7 +27,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 
-public class AddWorkerActivity extends BaseActivity<AddWorkerImp> implements AddWorkerContact.ViewAddWorker {
+public class AddWorkerActivity extends BaseActivity<EditContentImp> implements ItemEditTextContact.ViewEditContent {
     private static final int PHOTO_CODE = 10000;
     @Bind(R.id.tv_title)
     TextView tvTitle;
@@ -47,7 +47,7 @@ public class AddWorkerActivity extends BaseActivity<AddWorkerImp> implements Add
 
     @Override
     protected void initPresenter(Intent intent) {
-        mPresenter = new AddWorkerImp(this, this);
+        mPresenter = new EditContentImp(this, this);
     }
 
     @Override

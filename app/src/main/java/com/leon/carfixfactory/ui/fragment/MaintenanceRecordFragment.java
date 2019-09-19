@@ -7,18 +7,47 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.leon.carfixfactory.R;
 import com.leon.carfixfactory.bean.HomeData;
+import com.leon.carfixfactory.bean.ItemEditContent;
 import com.leon.carfixfactory.contract.HomeContact;
+import com.leon.carfixfactory.contract.ItemEditTextContact;
+import com.leon.carfixfactory.presenter.EditContentImp;
 import com.leon.carfixfactory.presenter.HomeDataPresenterImp;
+import com.leon.carfixfactory.utils.ContentViewSetting;
 
 import java.util.List;
 
-public class MaintenanceRecordFragment extends Fragment {
-    @Nullable
+import butterknife.Bind;
+
+public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> implements ItemEditTextContact.ViewEditContent {
+
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_car_info, container, false);
+    protected void initPresenter() {
+        mPresenter = new EditContentImp(getActivity(), this);
+    }
+
+    @Override
+    protected void initView(View view, Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_maintenance_content;
+    }
+
+
+    @Override
+    public void ShowToast(String t) {
+        showToast(t);
+    }
+
+    @Override
+    public void getItemDataSuccess(List<ItemEditContent> responses) {
+
     }
 }

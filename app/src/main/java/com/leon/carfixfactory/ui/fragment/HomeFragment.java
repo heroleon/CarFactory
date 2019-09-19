@@ -8,7 +8,6 @@ import android.view.View;
 import com.leon.carfixfactory.R;
 import com.leon.carfixfactory.bean.HomeData;
 import com.leon.carfixfactory.contract.HomeContact;
-import com.leon.carfixfactory.presenter.AddWorkerImp;
 import com.leon.carfixfactory.presenter.HomeDataPresenterImp;
 import com.leon.carfixfactory.ui.activity.MaintenanceRecordActivity;
 import com.leon.carfixfactory.ui.activity.WorkerManageActivity;

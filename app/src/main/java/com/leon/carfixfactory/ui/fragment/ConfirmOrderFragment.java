@@ -15,11 +15,30 @@ import com.leon.carfixfactory.presenter.HomeDataPresenterImp;
 
 import java.util.List;
 
-public class ConfirmOrderFragment extends Fragment{
+public class ConfirmOrderFragment extends BaseFragment<HomeDataPresenterImp> implements  HomeContact.ViewHome  {
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_confirm_order, container, false);
+    protected void initPresenter() {
+        mPresenter = new HomeDataPresenterImp(getActivity(), this);
+    }
+
+    @Override
+    protected void initView(View view, Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_confirm_order;
+    }
+
+    @Override
+    public void getHomeDataSuccess(List<HomeData> responses) {
+
+    }
+
+    @Override
+    public void ShowToast(String t) {
+
     }
 }

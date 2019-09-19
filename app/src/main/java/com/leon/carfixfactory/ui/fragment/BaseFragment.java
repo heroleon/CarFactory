@@ -23,7 +23,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     //初始化Presenter
     protected abstract void initPresenter();
 
-    protected BaseFragmentActivity mActivity;
+    protected Activity mActivity;
 
     protected abstract void initView(View view, Bundle savedInstanceState);
 
@@ -31,7 +31,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     protected abstract int getLayoutId();
 
     //获取宿主Activity
-    protected BaseFragmentActivity getHoldingActivity() {
+    protected Activity getHoldingActivity() {
         return mActivity;
     }
 
@@ -39,7 +39,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.mActivity = (BaseFragmentActivity) activity;
+        this.mActivity = activity;
     }
 
 
@@ -54,9 +54,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     }
 
     private void checkPresenterIsNull() {
-        /*if (mPresenter == null) {
+        if (mPresenter == null) {
             throw new IllegalStateException("please init mPresenter in initPresenter() method ");
-        }*/
+        }
     }
 
     public void showToast(String text){

@@ -17,4 +17,7 @@
     <string name="notify_add_worker_error">新增员工失败</string>
     <string name="last_step">上一步</string>
     <string name="next_step">下一步</string>
+    <string name="car_info">汽车信息</string>
+    <string name="car_owner_info">车主信息</string>
+    <string name="department_info">单位信息</string>
 </resources>
