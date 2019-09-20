@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.leon.carfixfactory.R;
+import com.leon.carfixfactory.bean.CarInfo;
 import com.leon.carfixfactory.bean.HomeData;
 import com.leon.carfixfactory.bean.ItemEditContent;
 import com.leon.carfixfactory.contract.HomeContact;
@@ -47,8 +48,6 @@ public class CarInfoFragment extends BaseFragment<EditContentImp> implements Ite
     LinearLayout llDepAddr;
     @Bind(R.id.ll_department_phone)
     LinearLayout llDepPhone;
-    @Bind(R.id.sl_root)
-    ScrollView slRoot;
 
     private View[] views;
 
@@ -63,6 +62,19 @@ public class CarInfoFragment extends BaseFragment<EditContentImp> implements Ite
                 llDriverName, llDriverCard, llDriverPhone,
                 llDepName, llDepAddr, llDepPhone};
         mPresenter.initItemData("itemCarInfo.json");
+    }
+
+    public boolean checkEmptyData(CarInfo carInfo) {
+        carInfo.carCard = ContentViewSetting.getEditTextContent(llCarId);
+        carInfo.chassisNum = ContentViewSetting.getEditTextContent(llChassisNum);
+        carInfo.engineNum = ContentViewSetting.getEditTextContent(llEngineNum);
+        carInfo.driverName = ContentViewSetting.getEditTextContent(llDriverName);
+        carInfo.driverIdcard = ContentViewSetting.getEditTextContent(llDriverCard);
+        carInfo.driverPhone = ContentViewSetting.getEditTextContent(llDriverPhone);
+        carInfo.departmentName = ContentViewSetting.getEditTextContent(llDepName);
+        carInfo.departmentAddr = ContentViewSetting.getEditTextContent(llDepAddr);
+        carInfo.departmentPhone = ContentViewSetting.getEditTextContent(llDepPhone);
+        return carInfo.checkData(getActivity());
     }
 
     @Override

@@ -74,16 +74,20 @@ public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements 
         Intent intent;
         switch (position) {
             case 0:
+                showToast("暂未开发，开发中...");
                 break;
             case 1:
                 intent = new Intent(getActivity(), MaintenanceRecordActivity.class);
                 startActivity(intent);
                 break;
             case 2:
+                showToast("暂未开发，开发中...");
                 break;
             case 3:
+                showToast("暂未开发，开发中...");
                 break;
             case 4:
+                showToast("暂未开发，开发中...");
                 break;
             case 5:
                 intent = new Intent(getActivity(), WorkerManageActivity.class);

@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.leon.carfixfactory.R;
+import com.leon.carfixfactory.bean.CarInfo;
 import com.leon.carfixfactory.bean.CarPartsInfo;
 import com.leon.carfixfactory.bean.ItemEditContent;
 import com.leon.carfixfactory.contract.ItemEditTextContact;
@@ -21,6 +23,8 @@ import com.leon.carfixfactory.presenter.EditContentImp;
 import com.leon.carfixfactory.ui.activity.WorkerManageActivity;
 import com.leon.carfixfactory.ui.adapter.CarPartsAdapter;
 import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerAdapter;
+import com.leon.carfixfactory.ui.custom.voice.VoiceView;
+import com.leon.carfixfactory.utils.ContentViewSetting;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
@@ -35,11 +39,19 @@ import static android.app.Activity.RESULT_OK;
 public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> implements ItemEditTextContact.ViewEditContent {
 
     private static final int DUTY_PERSON = 1000;
-    @Bind(R.id.tv_right)
-    TextView tvRight;
+
+    @Bind(R.id.tv_duty_person)
+    TextView tvDutyPerson;
+    @Bind(R.id.vv_maintenance_content)
+    VoiceView maintenanceContent;
+    @Bind(R.id.et_repair_time)
+    AppCompatEditText etRepairTime;
+    @Bind(R.id.et_work_fee)
+    AppCompatEditText etWorkFee;
     @Bind(R.id.rl_parts_list)
     RecyclerView rlParts;
     private CarPartsAdapter mAdapter;
+    private String dutyPersonName;
 
     @Override
     protected void initPresenter() {
@@ -49,6 +61,18 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         initRecyclerView();
+    }
+
+    public boolean checkEmptyData(CarInfo carInfo) {
+        carInfo.maintenanceDetail = maintenanceContent.getEditText();
+        carInfo.dutyPerson = dutyPersonName;
+        Editable editableTime = etRepairTime.getText();
+        Editable editableFee = etWorkFee.getText();
+        String tempTime = editableTime != null ? editableTime.toString() : "0";
+        String tempFee = editableFee != null ? editableFee.toString() : "0";
+        carInfo.workTime = Double.valueOf(TextUtils.isEmpty(tempTime) ? "0" : tempTime);
+        carInfo.workPrice = Double.valueOf(TextUtils.isEmpty(tempFee) ? "0" : tempFee);
+        return carInfo.checkRepirData(getActivity());
     }
 
     private void initRecyclerView() {
@@ -116,11 +140,14 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
                     @Override
                     public void onClick(QMUIDialog dialog12, int index) {
                         AppCompatEditText editName = dialog12.findViewById(R.id.et_part_name);
-                        String partName = editName.getText().toString().trim();
+                        Editable editableName = editName.getText();
+                        String partName = editableName != null ? editableName.toString() : "";
                         AppCompatEditText editPrice = dialog12.findViewById(R.id.et_part_price);
-                        String partPrice = editPrice.getText().toString().trim();
+                        Editable editablePrice = editPrice.getText();
+                        String partPrice = editablePrice != null ? editablePrice.toString() : "";
                         AppCompatEditText editCount = dialog12.findViewById(R.id.et_part_count);
-                        String partCount = editCount.getText().toString().trim();
+                        Editable editableCount = editCount.getText();
+                        String partCount = editableCount != null ? editableCount.toString() : "";
                         if (TextUtils.isEmpty(partName)) {
                             showToast(getString(R.string.notify_input_part_name));
                             return;
@@ -184,8 +211,8 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
         if (resultCode == RESULT_OK) {
             if (requestCode == DUTY_PERSON) {
                 if (data != null) {
-                    String dutyPersonName = data.getStringExtra("duty_person");
-                    tvRight.setText(dutyPersonName);
+                    dutyPersonName = data.getStringExtra("duty_person");
+                    tvDutyPerson.setText(dutyPersonName);
                 }
             }
         }

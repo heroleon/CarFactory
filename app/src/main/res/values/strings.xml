@@ -44,4 +44,15 @@
     <string name="notify_input_part_name">请输入配件名称</string>
     <string name="notify_input_part_price">请输入配件价格</string>
     <string name="notify_input_part_count">请输入配件数量</string>
+    <string name="notify_empty_car_id">请输入车牌号码</string>
+    <string name="notify_empty_chassis_num">请输入底盘号</string>
+    <string name="notify_empty_engine_num">请输入发动机号</string>
+    <string name="notify_empty_driver_name">请输入车主姓名</string>
+    <string name="notify_empty_driver_idcard">请输入车主身份证</string>
+    <string name="notify_empty_car_id_error">请输入正确的车牌号码</string>
+    <string name="notify_empty_driver_phone">请输入车主手机号码</string>
+    <string name="notify_empty_maintenance_content">请输入维修内容</string>
+    <string name="notify_empty_work_time">请输入工时</string>
+    <string name="notify_empty_work_price">请输入工时计费</string>
+    <string name="notify_empty_duty_person">请选择维修负责人</string>
 </resources>

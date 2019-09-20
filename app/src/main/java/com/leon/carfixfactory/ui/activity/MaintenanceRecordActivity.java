@@ -10,8 +10,11 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.leon.carfixfactory.MyApplication;
 import com.leon.carfixfactory.R;
+import com.leon.carfixfactory.bean.CarInfo;
 import com.leon.carfixfactory.bean.ItemEditContent;
+import com.leon.carfixfactory.beanDao.CarInfoDao;
 import com.leon.carfixfactory.contract.ItemEditTextContact;
 import com.leon.carfixfactory.presenter.EditContentImp;
 import com.leon.carfixfactory.ui.custom.NoScrollViewPager;
@@ -45,6 +48,8 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
     private boolean isConfirm = false;
     private View rootView;
     private int rootViewVisibleHeight;
+    private CarInfo carInfo;
+    private CarInfoDao carInfoDao;
 
     @Override
     protected void initPresenter(Intent intent) {
@@ -69,6 +74,7 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
         tvLastStep.setVisibility(View.GONE);
         initFragmentList();
         addKeyBordListener();
+        initCarInfo();
         viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -106,6 +112,11 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
 
             }
         });
+    }
+
+    private void initCarInfo() {
+        carInfoDao = MyApplication.getApplication().getDaoSession().getCarInfoDao();
+        carInfo = new CarInfo();
     }
 
     private void addKeyBordListener() {
@@ -154,9 +165,26 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
                 viewPager.setCurrentItem(currentIndex);
                 break;
             case R.id.tv_next_step:
+                Fragment fragment = fragmentList.get(currentIndex);
+                if (fragment instanceof CarInfoFragment) {
+                    if (((CarInfoFragment) fragment).checkEmptyData(carInfo)) {
+                        return;
+                    }
+                }
+                if (fragment instanceof MaintenanceRecordFragment) {
+                    if (((MaintenanceRecordFragment) fragment).checkEmptyData(carInfo)) {
+                        return;
+                    }
+                }
+                if (carInfo.carId!=null) {
+                    carInfoDao.update(carInfo);
+                } else {
+                    carInfoDao.insert(carInfo);
+                }
                 currentIndex++;
                 if (isConfirm) {
-
+                    carInfo.repairState = 0;
+                    carInfoDao.update(carInfo);
                 } else {
                     viewPager.setCurrentItem(currentIndex);
                 }

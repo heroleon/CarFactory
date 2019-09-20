@@ -17,7 +17,7 @@
 
         <!--维修内容-->
         <com.leon.carfixfactory.ui.custom.voice.VoiceView
-            android:id="@+id/vv_edu_content"
+            android:id="@+id/vv_maintenance_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:edittext_hint="@string/hint_input_500"
@@ -58,7 +58,7 @@
                 tools:ignore="HardcodedText,RtlHardcoded" />
 
             <TextView
-                android:id="@+id/tv_right"
+                android:id="@+id/tv_duty_person"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"

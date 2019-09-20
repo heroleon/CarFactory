@@ -25,7 +25,7 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
      */
     public static class Properties {
         public final static Property CarId = new Property(0, Long.class, "carId", true, "_id");
-        public final static Property CarID = new Property(1, String.class, "carID", false, "CAR_ID");
+        public final static Property CarCard = new Property(1, String.class, "carCard", false, "CAR_CARD");
         public final static Property ChassisNum = new Property(2, String.class, "chassisNum", false, "CHASSIS_NUM");
         public final static Property DriverPhone = new Property(3, String.class, "driverPhone", false, "DRIVER_PHONE");
         public final static Property EngineNum = new Property(4, String.class, "engineNum", false, "ENGINE_NUM");
@@ -55,7 +55,7 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CAR_INFO\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: carId
-                "\"CAR_ID\" TEXT," + // 1: carID
+                "\"CAR_CARD\" TEXT," + // 1: carCard
                 "\"CHASSIS_NUM\" TEXT," + // 2: chassisNum
                 "\"DRIVER_PHONE\" TEXT," + // 3: driverPhone
                 "\"ENGINE_NUM\" TEXT," + // 4: engineNum
@@ -86,9 +86,9 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
             stmt.bindLong(1, carId);
         }
  
-        String carID = entity.getCarID();
-        if (carID != null) {
-            stmt.bindString(2, carID);
+        String carCard = entity.getCarCard();
+        if (carCard != null) {
+            stmt.bindString(2, carCard);
         }
  
         String chassisNum = entity.getChassisNum();
@@ -154,9 +154,9 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
             stmt.bindLong(1, carId);
         }
  
-        String carID = entity.getCarID();
-        if (carID != null) {
-            stmt.bindString(2, carID);
+        String carCard = entity.getCarCard();
+        if (carCard != null) {
+            stmt.bindString(2, carCard);
         }
  
         String chassisNum = entity.getChassisNum();
@@ -222,7 +222,7 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
     public CarInfo readEntity(Cursor cursor, int offset) {
         CarInfo entity = new CarInfo( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // carId
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // carID
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // carCard
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // chassisNum
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // driverPhone
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // engineNum
@@ -243,7 +243,7 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
     @Override
     public void readEntity(Cursor cursor, CarInfo entity, int offset) {
         entity.setCarId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setCarID(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setCarCard(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setChassisNum(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setDriverPhone(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setEngineNum(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
