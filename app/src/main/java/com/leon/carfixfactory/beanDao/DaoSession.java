@@ -9,10 +9,12 @@ import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
 import com.leon.carfixfactory.bean.CarInfo;
+import com.leon.carfixfactory.bean.CarPartsInfo;
 import com.leon.carfixfactory.bean.RepairList;
 import com.leon.carfixfactory.bean.WorkerInfo;
 
 import com.leon.carfixfactory.beanDao.CarInfoDao;
+import com.leon.carfixfactory.beanDao.CarPartsInfoDao;
 import com.leon.carfixfactory.beanDao.RepairListDao;
 import com.leon.carfixfactory.beanDao.WorkerInfoDao;
 
@@ -26,10 +28,12 @@ import com.leon.carfixfactory.beanDao.WorkerInfoDao;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig carInfoDaoConfig;
+    private final DaoConfig carPartsInfoDaoConfig;
     private final DaoConfig repairListDaoConfig;
     private final DaoConfig workerInfoDaoConfig;
 
     private final CarInfoDao carInfoDao;
+    private final CarPartsInfoDao carPartsInfoDao;
     private final RepairListDao repairListDao;
     private final WorkerInfoDao workerInfoDao;
 
@@ -40,6 +44,9 @@ public class DaoSession extends AbstractDaoSession {
         carInfoDaoConfig = daoConfigMap.get(CarInfoDao.class).clone();
         carInfoDaoConfig.initIdentityScope(type);
 
+        carPartsInfoDaoConfig = daoConfigMap.get(CarPartsInfoDao.class).clone();
+        carPartsInfoDaoConfig.initIdentityScope(type);
+
         repairListDaoConfig = daoConfigMap.get(RepairListDao.class).clone();
         repairListDaoConfig.initIdentityScope(type);
 
@@ -47,22 +54,29 @@ public class DaoSession extends AbstractDaoSession {
         workerInfoDaoConfig.initIdentityScope(type);
 
         carInfoDao = new CarInfoDao(carInfoDaoConfig, this);
+        carPartsInfoDao = new CarPartsInfoDao(carPartsInfoDaoConfig, this);
         repairListDao = new RepairListDao(repairListDaoConfig, this);
         workerInfoDao = new WorkerInfoDao(workerInfoDaoConfig, this);
 
         registerDao(CarInfo.class, carInfoDao);
+        registerDao(CarPartsInfo.class, carPartsInfoDao);
         registerDao(RepairList.class, repairListDao);
         registerDao(WorkerInfo.class, workerInfoDao);
     }
     
     public void clear() {
         carInfoDaoConfig.clearIdentityScope();
+        carPartsInfoDaoConfig.clearIdentityScope();
         repairListDaoConfig.clearIdentityScope();
         workerInfoDaoConfig.clearIdentityScope();
     }
 
     public CarInfoDao getCarInfoDao() {
         return carInfoDao;
+    }
+
+    public CarPartsInfoDao getCarPartsInfoDao() {
+        return carPartsInfoDao;
     }
 
     public RepairListDao getRepairListDao() {

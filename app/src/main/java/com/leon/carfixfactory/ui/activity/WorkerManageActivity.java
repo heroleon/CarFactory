@@ -11,6 +11,7 @@ import com.leon.carfixfactory.bean.WorkerInfo;
 import com.leon.carfixfactory.contract.WorkerManageContact;
 import com.leon.carfixfactory.presenter.WorkerManageImp;
 import com.leon.carfixfactory.ui.adapter.WorkerManageAdapter;
+import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerAdapter;
 
 import java.util.List;
 
@@ -43,6 +44,16 @@ public class WorkerManageActivity extends BaseActivity<WorkerManageImp> implemen
         mAdapter = new WorkerManageAdapter(this, R.layout.item_worker_manage);
         mRecyclerView.setAdapter(mAdapter);
         mPresenter.getWorkerManageData();
+        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                WorkerInfo workerInfo = mAdapter.getItems(position);
+                Intent intent = new Intent();
+                intent.putExtra("duty_person", workerInfo.getWorkerName());
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
     @Override

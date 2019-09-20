@@ -11,7 +11,7 @@
     "sort": "1",
     "title": "底盘号",
     "must": "true",
-    "inputType": "2",
+    "inputType": "1",
     "maxLength": "17",
     "hint": "请输入"
   },
@@ -19,7 +19,7 @@
     "sort": "2",
     "title": "发动机号",
     "must": "true",
-    "inputType": "2",
+    "inputType": "1",
     "maxLength": "8",
     "hint": "请输入"
   },

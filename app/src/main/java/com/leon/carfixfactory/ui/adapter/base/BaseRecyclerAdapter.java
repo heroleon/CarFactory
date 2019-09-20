@@ -37,7 +37,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     }
 
 
-
     /**
      * 定义一个点击事件接口回调
      */
@@ -61,6 +60,17 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     }
 
     /**
+     * 更新一项
+     *
+     * @param item
+     * @param position
+     */
+    public void update(T item, int position) {
+        list.set(position, item);
+        notifyItemChanged(position);
+    }
+
+    /**
      * 删除一项
      *
      * @param position 删除位置
@@ -70,21 +80,25 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         notifyItemRemoved(position);
     }
 
-    public void updateWithClear(List<T> datas){
+    public void updateWithClear(List<T> datas) {
         list.clear();
         list.addAll(datas);
-        //notifyDataSetChanged();
+
     }
 
-    public void update(List<T> datas){
+    public void addItem(T item) {
+        list.add(item);
+    }
+
+    public void update(List<T> datas) {
         list.addAll(datas);
         //notifyDataSetChanged();
     }
 
-    public T getItems(int position){
-        if(list!=null){
+    public T getItems(int position) {
+        if (list != null) {
             return list.get(position);
-        }else{
+        } else {
             return null;
         }
     }
@@ -112,7 +126,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     @Override
     public void onBindViewHolder(final BaseRecyclerHolder holder, int position) {
 
-        if (listener != null){
+        if (listener != null) {
 
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -158,9 +172,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     /**
      * 填充RecyclerView适配器的方法，子类需要重写
      *
-     * @param holder      ViewHolder
-     * @param item        子项
-     * @param position    位置
+     * @param holder   ViewHolder
+     * @param item     子项
+     * @param position 位置
      */
     public abstract void convert(BaseRecyclerHolder holder, T item, int position);
 
