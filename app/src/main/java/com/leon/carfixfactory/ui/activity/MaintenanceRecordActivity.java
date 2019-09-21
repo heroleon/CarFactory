@@ -97,10 +97,11 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
                 currentIndex = i;
                 if (currentIndex == 0) {
                     tvLastStep.setVisibility(View.GONE);
+                    tvNextStep.setText(getString(R.string.next_step));
                 } else if (currentIndex == 1) {
                     tvLastStep.setVisibility(View.VISIBLE);
+                    tvNextStep.setText(getString(R.string.next_step));
                 } else {
-                    tvLastStep.setVisibility(View.GONE);
                     tvNextStep.setText(getString(R.string.confirm));
                 }
                 isConfirm = currentIndex == 2;
@@ -112,6 +113,10 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
 
             }
         });
+    }
+
+    public CarInfo getCarInfo() {
+        return carInfo;
     }
 
     private void initCarInfo() {
@@ -162,31 +167,38 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
                 break;
             case R.id.tv_last_step:
                 currentIndex--;
+                if (currentIndex == 0) {
+                    ((CarInfoFragment) fragmentList.get(currentIndex)).initData(carInfo);
+                }
                 viewPager.setCurrentItem(currentIndex);
                 break;
             case R.id.tv_next_step:
-                Fragment fragment = fragmentList.get(currentIndex);
-                if (fragment instanceof CarInfoFragment) {
-                    if (((CarInfoFragment) fragment).checkEmptyData(carInfo)) {
-                        return;
-                    }
-                }
-                if (fragment instanceof MaintenanceRecordFragment) {
-                    if (((MaintenanceRecordFragment) fragment).checkEmptyData(carInfo)) {
-                        return;
-                    }
-                }
-                if (carInfo.carId!=null) {
-                    carInfoDao.update(carInfo);
-                } else {
-                    carInfoDao.insert(carInfo);
-                }
-                currentIndex++;
                 if (isConfirm) {
                     carInfo.repairState = 0;
                     carInfoDao.update(carInfo);
+                    finish();
                 } else {
+                    Fragment fragment = fragmentList.get(currentIndex);
+                    if (fragment instanceof CarInfoFragment) {
+                        if (((CarInfoFragment) fragment).checkEmptyData(carInfo)) {
+                            return;
+                        }
+                    }
+                    if (fragment instanceof MaintenanceRecordFragment) {
+                        if (((MaintenanceRecordFragment) fragment).checkEmptyData(carInfo)) {
+                            return;
+                        }
+                    }
+                    if (carInfo.carId != null) {
+                        carInfoDao.update(carInfo);
+                    } else {
+                        carInfoDao.insert(carInfo);
+                    }
+                    currentIndex++;
                     viewPager.setCurrentItem(currentIndex);
+                    if (currentIndex == 2) {
+                        ((ConfirmOrderFragment) fragmentList.get(currentIndex)).initData(carInfo);
+                    }
                 }
                 break;
         }

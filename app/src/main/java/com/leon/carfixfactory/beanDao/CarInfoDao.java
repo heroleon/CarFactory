@@ -39,6 +39,8 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
         public final static Property WorkPrice = new Property(12, double.class, "workPrice", false, "WORK_PRICE");
         public final static Property DutyPerson = new Property(13, String.class, "dutyPerson", false, "DUTY_PERSON");
         public final static Property RepairState = new Property(14, int.class, "repairState", false, "REPAIR_STATE");
+        public final static Property AcceptTime = new Property(15, String.class, "acceptTime", false, "ACCEPT_TIME");
+        public final static Property TotalFee = new Property(16, String.class, "totalFee", false, "TOTAL_FEE");
     }
 
 
@@ -68,7 +70,9 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
                 "\"WORK_TIME\" REAL NOT NULL ," + // 11: workTime
                 "\"WORK_PRICE\" REAL NOT NULL ," + // 12: workPrice
                 "\"DUTY_PERSON\" TEXT," + // 13: dutyPerson
-                "\"REPAIR_STATE\" INTEGER NOT NULL );"); // 14: repairState
+                "\"REPAIR_STATE\" INTEGER NOT NULL ," + // 14: repairState
+                "\"ACCEPT_TIME\" TEXT," + // 15: acceptTime
+                "\"TOTAL_FEE\" TEXT);"); // 16: totalFee
     }
 
     /** Drops the underlying database table. */
@@ -143,6 +147,16 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
             stmt.bindString(14, dutyPerson);
         }
         stmt.bindLong(15, entity.getRepairState());
+ 
+        String acceptTime = entity.getAcceptTime();
+        if (acceptTime != null) {
+            stmt.bindString(16, acceptTime);
+        }
+ 
+        String totalFee = entity.getTotalFee();
+        if (totalFee != null) {
+            stmt.bindString(17, totalFee);
+        }
     }
 
     @Override
@@ -211,6 +225,16 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
             stmt.bindString(14, dutyPerson);
         }
         stmt.bindLong(15, entity.getRepairState());
+ 
+        String acceptTime = entity.getAcceptTime();
+        if (acceptTime != null) {
+            stmt.bindString(16, acceptTime);
+        }
+ 
+        String totalFee = entity.getTotalFee();
+        if (totalFee != null) {
+            stmt.bindString(17, totalFee);
+        }
     }
 
     @Override
@@ -235,7 +259,9 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
             cursor.getDouble(offset + 11), // workTime
             cursor.getDouble(offset + 12), // workPrice
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // dutyPerson
-            cursor.getInt(offset + 14) // repairState
+            cursor.getInt(offset + 14), // repairState
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // acceptTime
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16) // totalFee
         );
         return entity;
     }
@@ -257,6 +283,8 @@ public class CarInfoDao extends AbstractDao<CarInfo, Long> {
         entity.setWorkPrice(cursor.getDouble(offset + 12));
         entity.setDutyPerson(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setRepairState(cursor.getInt(offset + 14));
+        entity.setAcceptTime(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setTotalFee(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
      }
     
     @Override

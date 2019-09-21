@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +92,20 @@ public class CarInfoFragment extends BaseFragment<EditContentImp> implements Ite
     public void getItemDataSuccess(List<ItemEditContent> responses) {
         for (int i = 0; i < responses.size(); i++) {
             ContentViewSetting.setItemContent(views[i], responses.get(i));
+        }
+    }
+
+    public void initData(CarInfo carInfo) {
+        if (carInfo != null) {
+            ContentViewSetting.setEditTextContent(llCarId, carInfo.carCard);
+            ContentViewSetting.setEditTextContent(llChassisNum, carInfo.chassisNum);
+            ContentViewSetting.setEditTextContent(llEngineNum, carInfo.engineNum);
+            ContentViewSetting.setEditTextContent(llDriverName, carInfo.driverName);
+            ContentViewSetting.setEditTextContent(llDriverCard, carInfo.driverIdcard);
+            ContentViewSetting.setEditTextContent(llDriverPhone, carInfo.driverPhone);
+            ContentViewSetting.setEditTextContent(llDepName, carInfo.departmentName);
+            ContentViewSetting.setEditTextContent(llDepAddr, carInfo.departmentAddr);
+            ContentViewSetting.setEditTextContent(llDepPhone, carInfo.departmentPhone);
         }
     }
 }

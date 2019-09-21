@@ -29,11 +29,14 @@ public class CarInfo {
     public double workPrice = 0;
     public String dutyPerson;
     public int repairState;
+    public String acceptTime;
+    public String totalFee;
 
-    @Generated(hash = 1677475634)
+    @Generated(hash = 954049416)
     public CarInfo(Long carId, String carCard, String chassisNum, String driverPhone, String engineNum, String driverName,
-                   String driverIdcard, String departmentName, String departmentPhone, String departmentAddr,
-                   String maintenanceDetail, double workTime, double workPrice, String dutyPerson, int repairState) {
+            String driverIdcard, String departmentName, String departmentPhone, String departmentAddr,
+            String maintenanceDetail, double workTime, double workPrice, String dutyPerson, int repairState,
+            String acceptTime, String totalFee) {
         this.carId = carId;
         this.carCard = carCard;
         this.chassisNum = chassisNum;
@@ -49,6 +52,8 @@ public class CarInfo {
         this.workPrice = workPrice;
         this.dutyPerson = dutyPerson;
         this.repairState = repairState;
+        this.acceptTime = acceptTime;
+        this.totalFee = totalFee;
     }
 
 
@@ -258,6 +263,26 @@ public class CarInfo {
 
     public void setRepairState(int repairState) {
         this.repairState = repairState;
+    }
+
+
+    public String getAcceptTime() {
+        return this.acceptTime;
+    }
+
+
+    public void setAcceptTime(String acceptTime) {
+        this.acceptTime = acceptTime;
+    }
+
+
+    public String getTotalFee() {
+        return this.totalFee;
+    }
+
+
+    public void setTotalFee(String totalFee) {
+        this.totalFee = totalFee;
     }
 
 }

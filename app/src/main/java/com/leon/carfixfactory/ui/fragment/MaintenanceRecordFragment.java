@@ -14,12 +14,15 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.leon.carfixfactory.MyApplication;
 import com.leon.carfixfactory.R;
 import com.leon.carfixfactory.bean.CarInfo;
 import com.leon.carfixfactory.bean.CarPartsInfo;
 import com.leon.carfixfactory.bean.ItemEditContent;
+import com.leon.carfixfactory.beanDao.CarPartsInfoDao;
 import com.leon.carfixfactory.contract.ItemEditTextContact;
 import com.leon.carfixfactory.presenter.EditContentImp;
+import com.leon.carfixfactory.ui.activity.MaintenanceRecordActivity;
 import com.leon.carfixfactory.ui.activity.WorkerManageActivity;
 import com.leon.carfixfactory.ui.adapter.CarPartsAdapter;
 import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerAdapter;
@@ -52,6 +55,7 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
     RecyclerView rlParts;
     private CarPartsAdapter mAdapter;
     private String dutyPersonName;
+    private CarPartsInfoDao carPartDao;
 
     @Override
     protected void initPresenter() {
@@ -61,6 +65,7 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         initRecyclerView();
+        carPartDao = MyApplication.getApplication().getDaoSession().getCarPartsInfoDao();
     }
 
     public boolean checkEmptyData(CarInfo carInfo) {
@@ -84,6 +89,7 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
         mAdapter.setOnDelClickListener(new CarPartsAdapter.OnDelClickListener() {
             @Override
             public void onDelete(int position) {
+                MyApplication.getApplication().getDaoSession().getCarPartsInfoDao().delete(mAdapter.getItems(position));
                 mAdapter.delete(position);
             }
         });
@@ -160,18 +166,23 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
                             showToast(getString(R.string.notify_input_part_count));
                             return;
                         }
-                        if (carPartsInfo != null) {
-                            carPartsInfo.partName = partName;
-                            carPartsInfo.partCount = Integer.valueOf(partCount);
-                            carPartsInfo.partPrice = partPrice;
-                            mAdapter.update(carPartsInfo, position);
+                        Long carId = ((MaintenanceRecordActivity) mActivity).getCarInfo().getCarId();
+                        CarPartsInfo carPart = carPartsInfo;
+                        if (carPart != null) {
+                            carPart.carId = carId;
+                            carPart.partName = partName;
+                            carPart.partCount = Integer.valueOf(partCount);
+                            carPart.partPrice = partPrice;
+                            mAdapter.update(carPart, position);
                         } else {
-                            CarPartsInfo partsInfo = new CarPartsInfo();
-                            partsInfo.partName = partName;
-                            partsInfo.partCount = Integer.valueOf(partCount);
-                            partsInfo.partPrice = partPrice;
-                            mAdapter.addItem(partsInfo);
+                            carPart = new CarPartsInfo();
+                            carPart.carId = carId;
+                            carPart.partName = partName;
+                            carPart.partCount = Integer.valueOf(partCount);
+                            carPart.partPrice = partPrice;
+                            mAdapter.addItem(carPart);
                         }
+                        carPartDao.insertOrReplace(carPart);
                         dialog12.dismiss();
                     }
                 })

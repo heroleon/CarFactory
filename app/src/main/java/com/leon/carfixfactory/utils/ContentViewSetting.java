@@ -30,16 +30,22 @@ public class ContentViewSetting {
         return etContent.getText() == null ? null : etContent.getText().toString();
     }
 
+    public static void setEditTextContent(View view, String content) {
+        AppCompatEditText etContent = view.findViewById(R.id.et_content);
+        etContent.setText(content);
+    }
+
     /**
      * 设置剩余字数
-     * @param s 输入框
+     *
+     * @param s        输入框
      * @param textView 右下角字数文本TextView
      * @param maxCount 最大字数
      */
-    public static void setRemainingSize(Editable s, TextView textView, int maxCount){
-        if(s.length()> maxCount){
-            s.delete(maxCount,s.length());
+    public static void setRemainingSize(Editable s, TextView textView, int maxCount) {
+        if (s.length() > maxCount) {
+            s.delete(maxCount, s.length());
         }
-        textView.setText(String.valueOf(maxCount-s.length()));
+        textView.setText(String.valueOf(maxCount - s.length()));
     }
 }
