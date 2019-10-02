@@ -10,6 +10,7 @@ import com.leon.carfixfactory.bean.HomeData;
 import com.leon.carfixfactory.contract.HomeContact;
 import com.leon.carfixfactory.presenter.HomeDataPresenterImp;
 import com.leon.carfixfactory.ui.activity.MaintenanceRecordActivity;
+import com.leon.carfixfactory.ui.activity.RepairRecordListActivity;
 import com.leon.carfixfactory.ui.activity.WorkerManageActivity;
 import com.leon.carfixfactory.ui.adapter.HomeAdapter;
 import com.leon.carfixfactory.ui.custom.NoScrollGridLayoutManager;
@@ -17,6 +18,7 @@ import com.leon.carfixfactory.ui.custom.NoScrollGridLayoutManager;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by leon
@@ -67,6 +69,17 @@ public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements 
     @Override
     public void ShowToast(String t) {
         showToast(t);
+    }
+
+
+    @OnClick({R.id.tv_repair_record})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_repair_record:
+                Intent intent = new Intent(getActivity(), RepairRecordListActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override

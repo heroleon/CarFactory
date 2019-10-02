@@ -72,5 +72,7 @@
             android:name=".ui.activity.MaintenanceRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".ui.activity.RepairRecordListActivity"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>

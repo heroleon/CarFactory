@@ -65,4 +65,8 @@
     <string name="car_repair_time_content">维修工时:\u3000%1$s</string>
     <string name="car_repair_fee_content">工时费用:\u3000%1$s</string>
     <string name="total_fee">总费用</string>
+    <string name="title_repair_record">维修记录</string>
+    <string name="car_owner_name">车主姓名:\u3000%1$s</string>
+    <string name="repair_con">维修内容:\u3000</string>
+    <string name="car_owner_phone">车主电话:\u3000%1$s</string>
 </resources>

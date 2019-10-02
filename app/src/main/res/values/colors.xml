@@ -15,6 +15,7 @@
     <color name="colorTextLight">#d1d1d1</color>
     <color name="colorTrans">#00000000</color>
     <color name="colorBottom">#e2e2e2</color>
+    <color name="colorSpaceLine">#ededed</color>
     <color name="voiceColor">#CCE6FD</color>
     <color name="light_red">#D13838</color>
     <color name="bg_edit_solid">#EDF0F5</color>
