@@ -11,8 +11,12 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.io.Serializable;
+
 @Entity
-public class CarInfo {
+public class CarInfo implements Serializable {
+    private static final long serialVersionUID = -2071565876962058344L;
+
     @Id(autoincrement = true)
     public Long carId;
     public String carCard;

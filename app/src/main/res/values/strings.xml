@@ -69,4 +69,5 @@
     <string name="car_owner_name">车主姓名:\u3000%1$s</string>
     <string name="repair_con">维修内容:\u3000</string>
     <string name="car_owner_phone">车主电话:\u3000%1$s</string>
+    <string name="title_repair_detail">维修详情</string>
 </resources>

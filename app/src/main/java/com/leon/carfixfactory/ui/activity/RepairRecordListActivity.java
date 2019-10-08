@@ -11,6 +11,7 @@ import com.leon.carfixfactory.bean.CarInfo;
 import com.leon.carfixfactory.contract.RepairRecordContact;
 import com.leon.carfixfactory.presenter.RepairRecordImp;
 import com.leon.carfixfactory.ui.adapter.RepairRecordAdapter;
+import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerAdapter;
 
 import java.util.List;
 
@@ -44,6 +45,14 @@ public class RepairRecordListActivity extends BaseActivity<RepairRecordImp> impl
         mAdapter = new RepairRecordAdapter(this, R.layout.item_repair_record);
         rcRepairRecord.setAdapter(mAdapter);
         mPresenter.getRepairRecordData();
+        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                Intent intent = new Intent(RepairRecordListActivity.this, RepairDetailActivity.class);
+                intent.putExtra(RepairDetailActivity.CAR_INFO, mAdapter.getItems(position));
+                startActivity(intent);
+            }
+        });
     }
 
     private void initTile() {
