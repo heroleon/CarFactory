@@ -7,13 +7,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.leon.carfixfactory.R;
-import com.leon.carfixfactory.bean.CarInfo;
+import com.leon.carfixfactory.bean.AccessoriesInfo;
 import com.leon.carfixfactory.bean.CarPartsInfo;
+import com.leon.carfixfactory.bean.DriverInfo;
 import com.leon.carfixfactory.contract.OrderConfirmContact;
 import com.leon.carfixfactory.presenter.OderConfirmPresenter;
 import com.leon.carfixfactory.ui.adapter.ItemPartAdapter;
-import com.leon.carfixfactory.utils.DateTimeUtils;
-import com.leon.carfixfactory.utils.Utils;
 
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class RepairDetailActivity extends BaseActivity<OderConfirmPresenter> imp
     private ItemPartAdapter mAdapter;
 
     public final static String CAR_INFO = "car_info";
-    private CarInfo carInfo;
+    private DriverInfo driverInfo;
 
     @Override
     protected void initPresenter(Intent intent) {
@@ -62,7 +61,7 @@ public class RepairDetailActivity extends BaseActivity<OderConfirmPresenter> imp
     @Override
     protected void initView() {
         tvTitle.setText(getString(R.string.title_repair_detail));
-        carInfo = (CarInfo) getIntent().getSerializableExtra(CAR_INFO);
+        driverInfo = (DriverInfo) getIntent().getSerializableExtra(CAR_INFO);
         initRecyclerView();
         initData();
     }
@@ -75,17 +74,17 @@ public class RepairDetailActivity extends BaseActivity<OderConfirmPresenter> imp
         rlPartView.setNestedScrollingEnabled(false);
     }
     public void initData() {
-        mPresenter.getPartsList(carInfo.carId);
-        setText(tvCarCard, R.string.car_card_content, carInfo.carCard);
-        setText(tvDriverName, R.string.car_driver_name_content, carInfo.driverName);
-        setText(tvDriverPhone, R.string.car_driver_phone_content, carInfo.driverPhone);
-        carInfo.acceptTime = DateTimeUtils.millisecondToDate(System.currentTimeMillis(), DateTimeUtils.YYYY_MM_DD_HH_MM);
-        setText(tvAcceptTime, R.string.car_accept_time, carInfo.acceptTime);
-        tvRepairDetail.setText(carInfo.maintenanceDetail);
+      /*  mPresenter.getPartsList(driverInfo.carId);
+        setText(tvCarCard, R.string.car_card_content, driverInfo.carCard);
+        setText(tvDriverName, R.string.car_driver_name_content, driverInfo.driverName);
+        setText(tvDriverPhone, R.string.car_driver_phone_content, driverInfo.driverPhone);
+        driverInfo.acceptTime = DateTimeUtils.millisecondToDate(System.currentTimeMillis(), DateTimeUtils.YYYY_MM_DD_HH_MM);
+        setText(tvAcceptTime, R.string.car_accept_time, driverInfo.acceptTime);
+        tvRepairDetail.setText(driverInfo.maintenanceDetail);
 
-        setText(tvDutyPerson, R.string.car_duty_person_content, carInfo.dutyPerson);
-        setText(tvRepairTime, R.string.car_repair_time_content, Utils.getFinalCashValue(carInfo.workTime));
-        setText(tvTimeFee, R.string.car_repair_fee_content, Utils.getFinalCashValue(carInfo.workPrice));
+        setText(tvDutyPerson, R.string.car_duty_person_content, driverInfo.dutyPerson);
+        setText(tvRepairTime, R.string.car_repair_time_content, Utils.getFinalCashValue(driverInfo.workTime));
+        setText(tvTimeFee, R.string.car_repair_fee_content, Utils.getFinalCashValue(driverInfo.workPrice));*/
 
     }
 
@@ -105,7 +104,7 @@ public class RepairDetailActivity extends BaseActivity<OderConfirmPresenter> imp
     @Override
     public void getCarPartsList(List<CarPartsInfo> responses) {
         double totalPartPrice = 0;
-        if (responses != null && responses.size() > 0) {
+        /*if (responses != null && responses.size() > 0) {
             mAdapter.updateWithClear(responses);
             for (CarPartsInfo carpart : responses
             ) {
@@ -113,9 +112,14 @@ public class RepairDetailActivity extends BaseActivity<OderConfirmPresenter> imp
             }
         } else {
             rlPartView.setVisibility(View.GONE);
-        }
-        double totalPrice = carInfo.workTime * carInfo.workPrice + totalPartPrice;
-        setText(tvTotalFee, R.string.part_price, Utils.getFinalCashValue(totalPrice));
+        }*/
+       // double totalPrice = driverInfo.workTime * driverInfo.workPrice + totalPartPrice;
+       // setText(tvTotalFee, R.string.part_price, Utils.getFinalCashValue(totalPrice));
+    }
+
+    @Override
+    public void getAccessoriesList(List<AccessoriesInfo> responses) {
+
     }
 
     @Override

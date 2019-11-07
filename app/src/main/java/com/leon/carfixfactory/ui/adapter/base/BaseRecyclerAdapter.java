@@ -95,11 +95,21 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         notifyDataSetChanged();
     }
 
+    public List<T> getList() {
+        return list;
+    }
+
     public T getItems(int position) {
         if (list != null) {
             return list.get(position);
         } else {
             return null;
+        }
+    }
+
+    public void clear() {
+        if (list != null) {
+            list.clear();
         }
     }
 

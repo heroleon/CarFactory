@@ -1,5 +1,9 @@
 package com.leon.carfixfactory.bean;
 
+import android.text.TextUtils;
+
+import com.leon.carfixfactory.contract.RepairRecordContact;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
@@ -11,26 +15,26 @@ import org.greenrobot.greendao.annotation.Generated;
  * Desc:车辆维修配件信息
  */
 @Entity
-public class CarPartsInfo {
+public class CarPartsInfo implements RepairRecordContact.DialogContentObtain {
     @Id(autoincrement = true)
     public Long partId;
-    public Long carId;
-    public String partName;
-    public String partPrice;
-    public int partCount;
-
-    @Generated(hash = 1578039802)
-    public CarPartsInfo(Long partId, Long carId, String partName, String partPrice,
-                        int partCount) {
-        this.partId = partId;
-        this.carId = carId;
-        this.partName = partName;
-        this.partPrice = partPrice;
-        this.partCount = partCount;
-    }
+    public Long repairId;
+    public String partName;      //项目名称
+    public String partPrice;    //项目价格
+    public String workTime;     //工时
 
     @Generated(hash = 382406483)
     public CarPartsInfo() {
+    }
+
+    @Generated(hash = 4614629)
+    public CarPartsInfo(Long partId, Long repairId, String partName,
+                        String partPrice, String workTime) {
+        this.partId = partId;
+        this.repairId = repairId;
+        this.partName = partName;
+        this.partPrice = partPrice;
+        this.workTime = workTime;
     }
 
     public Long getPartId() {
@@ -41,12 +45,12 @@ public class CarPartsInfo {
         this.partId = partId;
     }
 
-    public Long getCarId() {
-        return this.carId;
+    public Long getRepairId() {
+        return this.repairId;
     }
 
-    public void setCarId(Long carId) {
-        this.carId = carId;
+    public void setRepairId(Long repairId) {
+        this.repairId = repairId;
     }
 
     public String getPartName() {
@@ -65,11 +69,26 @@ public class CarPartsInfo {
         this.partPrice = partPrice;
     }
 
-    public int getPartCount() {
-        return this.partCount;
+    public String getWorkTime() {
+        return this.workTime;
     }
 
-    public void setPartCount(int partCount) {
-        this.partCount = partCount;
+    public void setWorkTime(String workTime) {
+        this.workTime = workTime;
+    }
+
+    @Override
+    public String getFirstContent() {
+        return TextUtils.isEmpty(partName) ? "" : partName;
+    }
+
+    @Override
+    public String getSecondContent() {
+        return TextUtils.isEmpty(partPrice) ? "" : partPrice;
+    }
+
+    @Override
+    public String getThirdContent() {
+        return TextUtils.isEmpty(workTime) ? "" : workTime;
     }
 }

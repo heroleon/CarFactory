@@ -16,18 +16,24 @@ import android.widget.TextView;
 
 import com.leon.carfixfactory.MyApplication;
 import com.leon.carfixfactory.R;
-import com.leon.carfixfactory.bean.CarInfo;
+import com.leon.carfixfactory.bean.AccessoriesInfo;
 import com.leon.carfixfactory.bean.CarPartsInfo;
+import com.leon.carfixfactory.bean.DriverInfo;
 import com.leon.carfixfactory.bean.ItemEditContent;
+import com.leon.carfixfactory.bean.RepairRecord;
+import com.leon.carfixfactory.bean.WorkerInfo;
+import com.leon.carfixfactory.beanDao.AccessoriesInfoDao;
 import com.leon.carfixfactory.beanDao.CarPartsInfoDao;
+import com.leon.carfixfactory.beanDao.RepairRecordDao;
 import com.leon.carfixfactory.contract.ItemEditTextContact;
+import com.leon.carfixfactory.contract.RepairRecordContact;
 import com.leon.carfixfactory.presenter.EditContentImp;
 import com.leon.carfixfactory.ui.activity.MaintenanceRecordActivity;
 import com.leon.carfixfactory.ui.activity.WorkerManageActivity;
 import com.leon.carfixfactory.ui.adapter.CarPartsAdapter;
 import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerAdapter;
 import com.leon.carfixfactory.ui.custom.voice.VoiceView;
-import com.leon.carfixfactory.utils.ContentViewSetting;
+import com.leon.carfixfactory.utils.Utils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
@@ -38,6 +44,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
+import static com.leon.carfixfactory.ui.activity.WorkerManageActivity.WORKER_INFO;
 
 public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> implements ItemEditTextContact.ViewEditContent {
 
@@ -51,58 +58,123 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
     AppCompatEditText etRepairTime;
     @Bind(R.id.et_work_fee)
     AppCompatEditText etWorkFee;
-    @Bind(R.id.rl_parts_list)
+
+    @Bind(R.id.et_repair_mileage)
+    AppCompatEditText etRepairMileage;
+
+    @Bind(R.id.rl_repair_part)
     RecyclerView rlParts;
-    private CarPartsAdapter mAdapter;
-    private String dutyPersonName;
+    @Bind(R.id.rl_parts_accessorise)
+    RecyclerView rlAccessorise;
+
+
     private CarPartsInfoDao carPartDao;
+    private CarPartsAdapter mPartAdapter;
+    private CarPartsAdapter mAccessoriesAdapter;
+    private RepairRecord repairRecord;
+
+    private AccessoriesInfoDao accessoryDao;
+    private WorkerInfo workerInfo;
 
     @Override
     protected void initPresenter() {
         mPresenter = new EditContentImp(getActivity(), this);
     }
 
+    public void initRepairInfo(RepairRecord repairRecord) {
+        this.repairRecord = repairRecord;
+    }
+
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        initRecyclerView();
+        initAccessoriseRecyclerView();
+        initPartRecyclerView();
         carPartDao = MyApplication.getApplication().getDaoSession().getCarPartsInfoDao();
+        accessoryDao = MyApplication.getApplication().getDaoSession().getAccessoriesInfoDao();
     }
 
-    public boolean checkEmptyData(CarInfo carInfo) {
-        carInfo.maintenanceDetail = maintenanceContent.getEditText();
-        carInfo.dutyPerson = dutyPersonName;
-        Editable editableTime = etRepairTime.getText();
-        Editable editableFee = etWorkFee.getText();
-        String tempTime = editableTime != null ? editableTime.toString() : "0";
-        String tempFee = editableFee != null ? editableFee.toString() : "0";
-        carInfo.workTime = Double.valueOf(TextUtils.isEmpty(tempTime) ? "0" : tempTime);
-        carInfo.workPrice = Double.valueOf(TextUtils.isEmpty(tempFee) ? "0" : tempFee);
-        return carInfo.checkRepirData(getActivity());
-    }
-
-    private void initRecyclerView() {
+    private void initPartRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rlParts.setLayoutManager(linearLayoutManager);
-        mAdapter = new CarPartsAdapter(getContext(), R.layout.item_car_part);
-        rlParts.setAdapter(mAdapter);
-        mAdapter.setOnDelClickListener(new CarPartsAdapter.OnDelClickListener() {
+        mPartAdapter = new CarPartsAdapter(getContext(), R.layout.item_car_part);
+        rlParts.setAdapter(mPartAdapter);
+        mPartAdapter.setOnDelClickListener(new CarPartsAdapter.OnDelClickListener() {
             @Override
             public void onDelete(int position) {
-                MyApplication.getApplication().getDaoSession().getCarPartsInfoDao().delete(mAdapter.getItems(position));
-                mAdapter.delete(position);
+                carPartDao.delete((CarPartsInfo) mPartAdapter.getItems(position));
+                mPartAdapter.delete(position);
             }
         });
 
-        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+        mPartAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                showFileEditDialog(mAdapter.getItems(position), position);
+                showAddRepairDetailDialog(false, mPartAdapter.getItems(position), position);
             }
         });
     }
 
-    @OnClick(value = {R.id.ll_repair_duty_person, R.id.iv_add_part})
+
+    public boolean saveData() {
+        if (mPartAdapter.getItemCount() <= 0) {
+            showToast(getString(R.string.notify_add_part));
+            return false;
+        }
+        List partList = mPartAdapter.getList();
+        double totalPartPrice = 0;
+        double totalAccessoryPrice = 0;
+        for (int i = 0; i < partList.size(); i++) {
+            CarPartsInfo carPartsInfo = (CarPartsInfo) partList.get(i);
+            totalPartPrice += Double.valueOf(carPartsInfo.workTime) * Double.valueOf(carPartsInfo.partPrice);
+        }
+        repairRecord.totalPartFee = Utils.getFinalCashValue(totalPartPrice);
+        if (mAccessoriesAdapter.getItemCount() > 0) {
+            List accessoryList = mAccessoriesAdapter.getList();
+
+            for (int i = 0; i < accessoryList.size(); i++) {
+                AccessoriesInfo accessoriesInfo = (AccessoriesInfo) accessoryList.get(i);
+                totalAccessoryPrice += accessoriesInfo.accessoryCount * Double.valueOf(accessoriesInfo.accessoryPrice);
+            }
+            repairRecord.totalAccessoryFee = Utils.getFinalCashValue(totalAccessoryPrice);
+        } else {
+            repairRecord.totalAccessoryFee = null;
+        }
+        repairRecord.repairTotalFee = Utils.getFinalCashValue(totalAccessoryPrice + totalPartPrice);
+
+        repairRecord.repairDesc = maintenanceContent.getEditText();
+        repairRecord.dutyPersonName = workerInfo != null ? workerInfo.workerName : "";
+        repairRecord.dutyPersonId = workerInfo != null ? workerInfo.workerId.toString() : "";
+
+        Editable editableMileage = etRepairMileage.getText();
+        String mileage = editableMileage != null ? editableMileage.toString() : "";
+        repairRecord.repairMileage = TextUtils.isEmpty(mileage) ? "" : mileage;
+        return true;
+    }
+
+    private void initAccessoriseRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rlAccessorise.setLayoutManager(linearLayoutManager);
+        mAccessoriesAdapter = new CarPartsAdapter(getContext(), R.layout.item_car_part);
+        rlAccessorise.setAdapter(mAccessoriesAdapter);
+        mAccessoriesAdapter.setOnDelClickListener(new CarPartsAdapter.OnDelClickListener() {
+            @Override
+            public void onDelete(int position) {
+                accessoryDao.delete((AccessoriesInfo) mAccessoriesAdapter.getItems(position));
+                mAccessoriesAdapter.delete(position);
+            }
+        });
+
+        mAccessoriesAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                showAddRepairDetailDialog(true, mAccessoriesAdapter.getItems(position), position);
+            }
+        });
+    }
+
+    @OnClick(value = {R.id.ll_repair_duty_person, R.id.iv_add_part, R.id.iv_add_accessories})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_repair_duty_person:
@@ -110,7 +182,10 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
                 startActivityForResult(intent, DUTY_PERSON);
                 break;
             case R.id.iv_add_part:
-                showFileEditDialog(null, -1);
+                showAddRepairDetailDialog(false, null, -1);
+                break;
+            case R.id.iv_add_accessories:
+                showAddRepairDetailDialog(true, null, -1);
                 break;
         }
     }
@@ -131,7 +206,12 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
 
     }
 
-    private void showFileEditDialog(final CarPartsInfo carPartsInfo, final int position) {
+    @Override
+    public void existData(DriverInfo driverInfo) {
+
+    }
+
+    private void showAddRepairDetailDialog(final boolean isAccessories, final RepairRecordContact.DialogContentObtain itemInfo, final int position) {
         final InputMethodManager inputMethodManager = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         QMUIDialog.CustomDialogBuilder builder = new QMUIDialog.CustomDialogBuilder(getContext());
         builder.setLayout(R.layout.dialog_add_car_part);
@@ -155,34 +235,54 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
                         Editable editableCount = editCount.getText();
                         String partCount = editableCount != null ? editableCount.toString() : "";
                         if (TextUtils.isEmpty(partName)) {
-                            showToast(getString(R.string.notify_input_part_name));
+                            showToast(isAccessories ? getString(R.string.notify_input_accessory_name) : getString(R.string.notify_input_part_name));
                             return;
                         }
                         if (TextUtils.isEmpty(partPrice)) {
-                            showToast(getString(R.string.notify_input_part_price));
+                            showToast(isAccessories ? getString(R.string.notify_input_accessory_price) : getString(R.string.notify_input_part_price));
                             return;
                         }
                         if (TextUtils.isEmpty(partCount)) {
-                            showToast(getString(R.string.notify_input_part_count));
+                            showToast(isAccessories ? getString(R.string.notify_input_accessory_count) : getString(R.string.notify_input_part_count));
                             return;
                         }
-                        Long carId = ((MaintenanceRecordActivity) mActivity).getCarInfo().getCarId();
-                        CarPartsInfo carPart = carPartsInfo;
-                        if (carPart != null) {
-                            carPart.carId = carId;
-                            carPart.partName = partName;
-                            carPart.partCount = Integer.valueOf(partCount);
-                            carPart.partPrice = partPrice;
-                            mAdapter.update(carPart, position);
+                        if (isAccessories) {
+                            AccessoriesInfo accessoriesInfo;
+                            if (itemInfo != null) {
+                                accessoriesInfo = (AccessoriesInfo) itemInfo;
+                                accessoriesInfo.accessoryName = partName;
+                                accessoriesInfo.accessoryCount = Integer.parseInt(partCount);
+                                accessoriesInfo.accessoryPrice = partPrice;
+                                mAccessoriesAdapter.update(accessoriesInfo, position);
+                            } else {
+                                accessoriesInfo = new AccessoriesInfo();
+                                accessoriesInfo.repairId = repairRecord.repairId;
+                                accessoriesInfo.accessoryName = partName;
+                                accessoriesInfo.accessoryCount = Integer.parseInt(partCount);
+                                accessoriesInfo.accessoryPrice = partPrice;
+                                mAccessoriesAdapter.addItem(accessoriesInfo);
+                                mAccessoriesAdapter.notifyDataSetChanged();
+                            }
+                            accessoryDao.insertOrReplace(accessoriesInfo);
                         } else {
-                            carPart = new CarPartsInfo();
-                            carPart.carId = carId;
-                            carPart.partName = partName;
-                            carPart.partCount = Integer.valueOf(partCount);
-                            carPart.partPrice = partPrice;
-                            mAdapter.addItem(carPart);
+                            CarPartsInfo carPart;
+                            if (itemInfo != null) {
+                                carPart = (CarPartsInfo) itemInfo;
+                                carPart.partName = partName;
+                                carPart.workTime = partCount;
+                                carPart.partPrice = partPrice;
+                                mPartAdapter.update(carPart, position);
+                            } else {
+                                carPart = new CarPartsInfo();
+                                carPart.repairId = repairRecord.repairId;
+                                carPart.partName = partName;
+                                carPart.workTime = partCount;
+                                carPart.partPrice = partPrice;
+                                mPartAdapter.addItem(carPart);
+                                mPartAdapter.notifyDataSetChanged();
+                            }
+                            carPartDao.insertOrReplace(carPart);
                         }
-                        carPartDao.insertOrReplace(carPart);
                         dialog12.dismiss();
                     }
                 })
@@ -190,12 +290,21 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
         final AppCompatEditText editName = dialog.findViewById(R.id.et_part_name);
         AppCompatEditText editPrice = dialog.findViewById(R.id.et_part_price);
         AppCompatEditText editCount = dialog.findViewById(R.id.et_part_count);
-        if (carPartsInfo != null) {
-            editPrice.setText(carPartsInfo.partPrice);
-            editName.setText(carPartsInfo.partName);
-            editName.setSelection(carPartsInfo.partName.length());
-            editCount.setText(String.valueOf(carPartsInfo.partCount));
+        TextView tv_title = dialog.findViewById(R.id.tv_title);
+        TextView tvFirstTitle = dialog.findViewById(R.id.tv_first_title);
+        TextView tvThirdTitle = dialog.findViewById(R.id.tv_third_title);
+
+        tv_title.setText(isAccessories ? getString(R.string.new_add_car_part) : getString(R.string.title_new_part));
+        tvFirstTitle.setText(isAccessories ? getString(R.string.car_part_name) : getString(R.string.title_repair_part));
+        tvThirdTitle.setText(isAccessories ? getString(R.string.car_part_count) : getString(R.string.title_repair_time));
+
+        if (itemInfo != null) {
+            editPrice.setText(itemInfo.getSecondContent());
+            editName.setText(itemInfo.getFirstContent());
+            editName.setSelection(itemInfo.getFirstContent().length());
+            editCount.setText(itemInfo.getThirdContent());
         }
+
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog13) {
@@ -222,8 +331,8 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
         if (resultCode == RESULT_OK) {
             if (requestCode == DUTY_PERSON) {
                 if (data != null) {
-                    dutyPersonName = data.getStringExtra("duty_person");
-                    tvDutyPerson.setText(dutyPersonName);
+                    workerInfo = (WorkerInfo) data.getSerializableExtra(WORKER_INFO);
+                    tvDutyPerson.setText(workerInfo.workerName);
                 }
             }
         }

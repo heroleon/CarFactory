@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.leon.carfixfactory.R;
 import com.leon.carfixfactory.bean.CarPartsInfo;
+import com.leon.carfixfactory.contract.RepairRecordContact;
 import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerAdapter;
 import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerHolder;
 
@@ -15,7 +16,7 @@ import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerHolder;
  * Time: 14:48
  * Desc:
  */
-public class CarPartsAdapter extends BaseRecyclerAdapter<CarPartsInfo> {
+public class CarPartsAdapter extends BaseRecyclerAdapter<RepairRecordContact.DialogContentObtain> {
     private Resources res;
     private OnDelClickListener onDelClickListener;
 
@@ -25,10 +26,10 @@ public class CarPartsAdapter extends BaseRecyclerAdapter<CarPartsInfo> {
     }
 
     @Override
-    public void convert(BaseRecyclerHolder holder, CarPartsInfo item, final int position) {
-        holder.setText(R.id.tv_part_name, item.partName);
-        holder.setText(R.id.tv_part_count, String.format(res.getString(R.string.part_count), item.partCount));
-        holder.setText(R.id.tv_part_price, String.format(res.getString(R.string.part_price), item.partPrice));
+    public void convert(BaseRecyclerHolder holder, RepairRecordContact.DialogContentObtain item, final int position) {
+        holder.setText(R.id.tv_part_name, item.getFirstContent());
+        holder.setText(R.id.tv_part_count, String.format(res.getString(R.string.part_count), item.getThirdContent()));
+        holder.setText(R.id.tv_part_price, String.format(res.getString(R.string.part_price), item.getSecondContent()));
         holder.getView(R.id.iv_delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

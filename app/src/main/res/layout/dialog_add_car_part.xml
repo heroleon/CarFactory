@@ -25,6 +25,7 @@
         android:paddingRight="15dp">
 
         <TextView
+            android:id="@+id/tv_first_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -37,11 +38,11 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_weight="1"
             android:background="@drawable/item_gray_shape"
             android:gravity="right|center_vertical"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:textColor="@color/colorTextBlack"
             android:textColorHint="@color/colorTextBlack"
             android:textSize="14sp"
@@ -81,6 +82,7 @@
             tools:ignore="RtlHardcoded,RtlSymmetry" />
 
         <TextView
+            android:id="@+id/tv_third_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
@@ -98,7 +100,7 @@
             android:layout_weight="1"
             android:background="@drawable/item_gray_shape"
             android:gravity="right|center_vertical"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@color/colorTextBlack"

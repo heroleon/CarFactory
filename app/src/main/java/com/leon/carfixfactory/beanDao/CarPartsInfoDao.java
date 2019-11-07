@@ -25,10 +25,10 @@ public class CarPartsInfoDao extends AbstractDao<CarPartsInfo, Long> {
      */
     public static class Properties {
         public final static Property PartId = new Property(0, Long.class, "partId", true, "_id");
-        public final static Property CarId = new Property(1, Long.class, "carId", false, "CAR_ID");
+        public final static Property RepairId = new Property(1, Long.class, "repairId", false, "REPAIR_ID");
         public final static Property PartName = new Property(2, String.class, "partName", false, "PART_NAME");
         public final static Property PartPrice = new Property(3, String.class, "partPrice", false, "PART_PRICE");
-        public final static Property PartCount = new Property(4, int.class, "partCount", false, "PART_COUNT");
+        public final static Property WorkTime = new Property(4, String.class, "workTime", false, "WORK_TIME");
     }
 
 
@@ -45,10 +45,10 @@ public class CarPartsInfoDao extends AbstractDao<CarPartsInfo, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CAR_PARTS_INFO\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: partId
-                "\"CAR_ID\" INTEGER," + // 1: carId
+                "\"REPAIR_ID\" INTEGER," + // 1: repairId
                 "\"PART_NAME\" TEXT," + // 2: partName
                 "\"PART_PRICE\" TEXT," + // 3: partPrice
-                "\"PART_COUNT\" INTEGER NOT NULL );"); // 4: partCount
+                "\"WORK_TIME\" TEXT);"); // 4: workTime
     }
 
     /** Drops the underlying database table. */
@@ -66,9 +66,9 @@ public class CarPartsInfoDao extends AbstractDao<CarPartsInfo, Long> {
             stmt.bindLong(1, partId);
         }
  
-        Long carId = entity.getCarId();
-        if (carId != null) {
-            stmt.bindLong(2, carId);
+        Long repairId = entity.getRepairId();
+        if (repairId != null) {
+            stmt.bindLong(2, repairId);
         }
  
         String partName = entity.getPartName();
@@ -80,7 +80,11 @@ public class CarPartsInfoDao extends AbstractDao<CarPartsInfo, Long> {
         if (partPrice != null) {
             stmt.bindString(4, partPrice);
         }
-        stmt.bindLong(5, entity.getPartCount());
+ 
+        String workTime = entity.getWorkTime();
+        if (workTime != null) {
+            stmt.bindString(5, workTime);
+        }
     }
 
     @Override
@@ -92,9 +96,9 @@ public class CarPartsInfoDao extends AbstractDao<CarPartsInfo, Long> {
             stmt.bindLong(1, partId);
         }
  
-        Long carId = entity.getCarId();
-        if (carId != null) {
-            stmt.bindLong(2, carId);
+        Long repairId = entity.getRepairId();
+        if (repairId != null) {
+            stmt.bindLong(2, repairId);
         }
  
         String partName = entity.getPartName();
@@ -106,7 +110,11 @@ public class CarPartsInfoDao extends AbstractDao<CarPartsInfo, Long> {
         if (partPrice != null) {
             stmt.bindString(4, partPrice);
         }
-        stmt.bindLong(5, entity.getPartCount());
+ 
+        String workTime = entity.getWorkTime();
+        if (workTime != null) {
+            stmt.bindString(5, workTime);
+        }
     }
 
     @Override
@@ -118,10 +126,10 @@ public class CarPartsInfoDao extends AbstractDao<CarPartsInfo, Long> {
     public CarPartsInfo readEntity(Cursor cursor, int offset) {
         CarPartsInfo entity = new CarPartsInfo( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // partId
-            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // carId
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // repairId
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // partName
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // partPrice
-            cursor.getInt(offset + 4) // partCount
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // workTime
         );
         return entity;
     }
@@ -129,10 +137,10 @@ public class CarPartsInfoDao extends AbstractDao<CarPartsInfo, Long> {
     @Override
     public void readEntity(Cursor cursor, CarPartsInfo entity, int offset) {
         entity.setPartId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setCarId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setRepairId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
         entity.setPartName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setPartPrice(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setPartCount(cursor.getInt(offset + 4));
+        entity.setWorkTime(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
     @Override

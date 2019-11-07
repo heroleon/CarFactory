@@ -12,14 +12,16 @@ import android.widget.TextView;
 
 import com.leon.carfixfactory.MyApplication;
 import com.leon.carfixfactory.R;
-import com.leon.carfixfactory.bean.CarInfo;
+import com.leon.carfixfactory.bean.DriverInfo;
 import com.leon.carfixfactory.bean.ItemEditContent;
-import com.leon.carfixfactory.beanDao.CarInfoDao;
+import com.leon.carfixfactory.bean.RepairRecord;
+import com.leon.carfixfactory.beanDao.DriverInfoDao;
+import com.leon.carfixfactory.beanDao.RepairRecordDao;
 import com.leon.carfixfactory.contract.ItemEditTextContact;
 import com.leon.carfixfactory.presenter.EditContentImp;
 import com.leon.carfixfactory.ui.custom.NoScrollViewPager;
-import com.leon.carfixfactory.ui.fragment.CarInfoFragment;
 import com.leon.carfixfactory.ui.fragment.ConfirmOrderFragment;
+import com.leon.carfixfactory.ui.fragment.DriverInfoFragment;
 import com.leon.carfixfactory.ui.fragment.MaintenanceRecordFragment;
 import com.leon.carfixfactory.utils.AndroidBug5497Workaround;
 import com.leon.carfixfactory.utils.DisplayUtil;
@@ -30,7 +32,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 
-public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> implements ItemEditTextContact.ViewEditContent {
+public class MaintenanceRecordActivity extends BaseActivity {
 
     @Bind(R.id.tv_title)
     TextView tvTitle;
@@ -48,12 +50,18 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
     private boolean isConfirm = false;
     private View rootView;
     private int rootViewVisibleHeight;
-    private CarInfo carInfo;
-    private CarInfoDao carInfoDao;
+    private DriverInfo driverInfo;
+    private DriverInfoDao driverInfoDao;
+    private RepairRecord repairRecord;
+    private RepairRecordDao repairRecordDao;
+    private MaintenanceRecordFragment maintenanceRecordFragment;
+    private ConfirmOrderFragment confirmOrderFragment;
+    private DriverInfoFragment driverInfoFragment;
+
 
     @Override
     protected void initPresenter(Intent intent) {
-        mPresenter = new EditContentImp(this, this);
+
     }
 
     @Override
@@ -115,13 +123,15 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
         });
     }
 
-    public CarInfo getCarInfo() {
-        return carInfo;
+    private void initCarInfo() {
+        driverInfoDao = MyApplication.getApplication().getDaoSession().getDriverInfoDao();
+        repairRecordDao = MyApplication.getApplication().getDaoSession().getRepairRecordDao();
+        driverInfo = new DriverInfo();
+        repairRecord = new RepairRecord();
     }
 
-    private void initCarInfo() {
-        carInfoDao = MyApplication.getApplication().getDaoSession().getCarInfoDao();
-        carInfo = new CarInfo();
+    public void setDriverInfo(DriverInfo driverInfo) {
+        this.driverInfo = driverInfo;
     }
 
     private void addKeyBordListener() {
@@ -163,41 +173,50 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                if (repairRecord.repairId != null) {
+                    repairRecordDao.delete(repairRecord);
+                }
                 finish();
                 break;
             case R.id.tv_last_step:
                 currentIndex--;
                 if (currentIndex == 0) {
-                    ((CarInfoFragment) fragmentList.get(currentIndex)).initData(carInfo);
+                    driverInfoFragment.initData(driverInfo);
                 }
                 viewPager.setCurrentItem(currentIndex);
                 break;
             case R.id.tv_next_step:
                 if (isConfirm) {
-                    carInfo.repairState = 0;
-                    carInfoDao.update(carInfo);
+                    repairRecord.arrivalTime = System.currentTimeMillis();
+                    repairRecordDao.update(repairRecord);
                     finish();
                 } else {
                     Fragment fragment = fragmentList.get(currentIndex);
-                    if (fragment instanceof CarInfoFragment) {
-                        if (((CarInfoFragment) fragment).checkEmptyData(carInfo)) {
+                    if (fragment instanceof DriverInfoFragment) {
+                        if (driverInfoFragment.setDriverInfo(driverInfo)) {
                             return;
                         }
+                        if (driverInfo.driverId != null) {
+                            driverInfoDao.update(driverInfo);
+                        } else {
+                            driverInfoDao.insert(driverInfo);
+                        }
+                        repairRecord.driverId = driverInfo.driverId;
+                        repairRecordDao.insertOrReplace(repairRecord);
+                        maintenanceRecordFragment.initRepairInfo(repairRecord);
                     }
+
                     if (fragment instanceof MaintenanceRecordFragment) {
-                        if (((MaintenanceRecordFragment) fragment).checkEmptyData(carInfo)) {
+                        if (!maintenanceRecordFragment.saveData()) {
                             return;
                         }
+                        repairRecordDao.update(repairRecord);
                     }
-                    if (carInfo.carId != null) {
-                        carInfoDao.update(carInfo);
-                    } else {
-                        carInfoDao.insert(carInfo);
-                    }
+
                     currentIndex++;
                     viewPager.setCurrentItem(currentIndex);
                     if (currentIndex == 2) {
-                        ((ConfirmOrderFragment) fragmentList.get(currentIndex)).initData(carInfo);
+                        confirmOrderFragment.initData(driverInfo, repairRecord);
                     }
                 }
                 break;
@@ -208,18 +227,11 @@ public class MaintenanceRecordActivity extends BaseActivity<EditContentImp> impl
         titles = getResources().getStringArray(R.array.maintenance_title);
         tvTitle.setText(titles[0]);
         fragmentList = new ArrayList<>();
-        fragmentList.add(new CarInfoFragment());
-        fragmentList.add(new MaintenanceRecordFragment());
-        fragmentList.add(new ConfirmOrderFragment());
-    }
-
-    @Override
-    public void getItemDataSuccess(List<ItemEditContent> responses) {
-
-    }
-
-    @Override
-    public void ShowToast(String t) {
-
+        driverInfoFragment = new DriverInfoFragment();
+        maintenanceRecordFragment = new MaintenanceRecordFragment();
+        confirmOrderFragment = new ConfirmOrderFragment();
+        fragmentList.add(driverInfoFragment);
+        fragmentList.add(maintenanceRecordFragment);
+        fragmentList.add(confirmOrderFragment);
     }
 }

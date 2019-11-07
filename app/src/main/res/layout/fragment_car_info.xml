@@ -46,6 +46,10 @@
             layout="@layout/include_content_edit" />
 
         <include
+            android:id="@+id/ll_car_model"
+            layout="@layout/include_content_edit" />
+
+        <include
             android:id="@+id/ll_chassis_num"
             layout="@layout/include_content_edit" />
 
@@ -85,7 +89,7 @@
             layout="@layout/include_content_edit" />
 
         <include
-            android:id="@+id/ll_driver_card"
+            android:id="@+id/ll_driver_address"
             layout="@layout/include_content_edit" />
 
         <include

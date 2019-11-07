@@ -51,7 +51,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
         //初始化ButterKnife
         ButterKnife.bind(this);
         initPresenter(getIntent());
-        checkPresenterIsNull();
         initView();
     }
 
@@ -79,12 +78,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    private void checkPresenterIsNull() {
-        if (mPresenter == null) {
-            throw new IllegalStateException("please init mPresenter in initPresenter() method ");
-        }
     }
 
     //设置打印方法

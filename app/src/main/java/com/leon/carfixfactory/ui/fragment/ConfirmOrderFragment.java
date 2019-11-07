@@ -1,22 +1,22 @@
 package com.leon.carfixfactory.ui.fragment;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leon.carfixfactory.R;
-import com.leon.carfixfactory.bean.CarInfo;
+import com.leon.carfixfactory.bean.AccessoriesInfo;
 import com.leon.carfixfactory.bean.CarPartsInfo;
-import com.leon.carfixfactory.bean.HomeData;
-import com.leon.carfixfactory.contract.HomeContact;
+import com.leon.carfixfactory.bean.DriverInfo;
+import com.leon.carfixfactory.bean.RepairRecord;
 import com.leon.carfixfactory.contract.OrderConfirmContact;
-import com.leon.carfixfactory.presenter.HomeDataPresenterImp;
 import com.leon.carfixfactory.presenter.OderConfirmPresenter;
 import com.leon.carfixfactory.ui.adapter.ItemPartAdapter;
-import com.leon.carfixfactory.utils.DateTimeUtils;
-import com.leon.carfixfactory.utils.Utils;
 
 
 import java.util.List;
@@ -30,8 +30,19 @@ public class ConfirmOrderFragment extends BaseFragment<OderConfirmPresenter> imp
     TextView tvDriverName;
     @Bind(R.id.tv_driver_phone)
     TextView tvDriverPhone;
-    @Bind(R.id.tv_accept_car_time)
-    TextView tvAcceptTime;
+    @Bind(R.id.tv_repair_mileage)
+    TextView tvRepairMileage;
+    @Bind(R.id.tv_accessory_fee)
+    TextView tvAccessoryFee;
+    @Bind(R.id.tv_part_fee)
+    TextView tvPartFee;
+
+    @Bind(R.id.ll_repair_desc)
+    LinearLayout llRepairDesc;
+    @Bind(R.id.cl_accessory)
+    ConstraintLayout clAccessory;
+
+
     @Bind(R.id.tv_repair_content)
     TextView tvRepairDetail;
 
@@ -43,10 +54,12 @@ public class ConfirmOrderFragment extends BaseFragment<OderConfirmPresenter> imp
     TextView tvTimeFee;
     @Bind(R.id.rl_part_view)
     RecyclerView rlPartView;
+    @Bind(R.id.rl_accessory_view)
+    RecyclerView rlAccessoryView;
     @Bind(R.id.tv_total_fee)
     TextView tvTotalFee;
     private ItemPartAdapter mAdapter;
-    private CarInfo carInfo;
+    private ItemPartAdapter mAccessoryAdapter;
 
     @Override
     protected void initPresenter() {
@@ -65,6 +78,13 @@ public class ConfirmOrderFragment extends BaseFragment<OderConfirmPresenter> imp
         mAdapter = new ItemPartAdapter(getContext(), R.layout.item_confirm_part);
         rlPartView.setAdapter(mAdapter);
         rlPartView.setNestedScrollingEnabled(false);
+
+        LinearLayoutManager accessoryManager = new LinearLayoutManager(getContext());
+        accessoryManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rlAccessoryView.setLayoutManager(accessoryManager);
+        mAccessoryAdapter = new ItemPartAdapter(getContext(), R.layout.item_confirm_part);
+        rlAccessoryView.setAdapter(mAccessoryAdapter);
+        rlAccessoryView.setNestedScrollingEnabled(false);
     }
 
     @Override
@@ -77,21 +97,31 @@ public class ConfirmOrderFragment extends BaseFragment<OderConfirmPresenter> imp
         showToast(t);
     }
 
-    public void initData(CarInfo carInfo) {
-        this.carInfo = carInfo;
+    public void initData(DriverInfo driverInfo, RepairRecord repairRecord) {
+        mPresenter.getPartsList(repairRecord.repairId);
+        mPresenter.getAccessoryList(repairRecord.repairId);
+        setText(tvCarCard, R.string.car_card_content, getTxtContent(driverInfo.numberPlate));
+        setText(tvDriverName, R.string.car_driver_name_content, getTxtContent(driverInfo.driverName));
+        setText(tvDriverPhone, R.string.car_driver_phone_content, getTxtContent(driverInfo.driverPhone));
+        setText(tvRepairMileage, R.string.car_repair_mileage,
+                TextUtils.isEmpty(repairRecord.repairMileage)
+                        ? getString(R.string.empty_data)
+                        : repairRecord.repairMileage + "KM");
 
-        mPresenter.getPartsList(carInfo.carId);
-        setText(tvCarCard, R.string.car_card_content, carInfo.carCard);
-        setText(tvDriverName, R.string.car_driver_name_content, carInfo.driverName);
-        setText(tvDriverPhone, R.string.car_driver_phone_content, carInfo.driverPhone);
-        carInfo.acceptTime = DateTimeUtils.millisecondToDate(System.currentTimeMillis(), DateTimeUtils.YYYY_MM_DD_HH_MM);
-        setText(tvAcceptTime, R.string.car_accept_time, carInfo.acceptTime);
-        tvRepairDetail.setText(carInfo.maintenanceDetail);
+        if (TextUtils.isEmpty(repairRecord.repairDesc)) {
+            llRepairDesc.setVisibility(View.GONE);
+        } else {
+            llRepairDesc.setVisibility(View.VISIBLE);
+            tvRepairDetail.setText(repairRecord.repairDesc);
+        }
 
-        setText(tvDutyPerson, R.string.car_duty_person_content, carInfo.dutyPerson);
-        setText(tvRepairTime, R.string.car_repair_time_content, Utils.getFinalCashValue(carInfo.workTime));
-        setText(tvTimeFee, R.string.car_repair_fee_content, Utils.getFinalCashValue(carInfo.workPrice));
+        setText(tvPartFee, R.string.part_price_brackets, repairRecord.totalPartFee);
 
+        if (!TextUtils.isEmpty(repairRecord.totalAccessoryFee)) {
+            setText(tvAccessoryFee, R.string.part_price_brackets, repairRecord.totalAccessoryFee);
+        }
+        setText(tvTotalFee, R.string.part_price, repairRecord.repairTotalFee);
+        setText(tvDutyPerson, R.string.car_duty_person_content, getTxtContent(repairRecord.dutyPersonName));
     }
 
     private void setText(TextView tvView, int resId, String content) {
@@ -100,18 +130,33 @@ public class ConfirmOrderFragment extends BaseFragment<OderConfirmPresenter> imp
 
     @Override
     public void getCarPartsList(List<CarPartsInfo> responses) {
-        double totalPartPrice = 0;
         if (responses != null && responses.size() > 0) {
-            mAdapter.updateWithClear(responses);
-            for (CarPartsInfo carpart : responses
+            mAdapter.clear();
+            for (CarPartsInfo carPartsInfo : responses
             ) {
-                totalPartPrice += carpart.partCount * Double.valueOf(carpart.partPrice);
+                mAdapter.addItem(carPartsInfo);
             }
-        } else {
-            rlPartView.setVisibility(View.GONE);
+            mAdapter.notifyDataSetChanged();
         }
-        double totalPrice = carInfo.workTime * carInfo.workPrice + totalPartPrice;
-        setText(tvTotalFee, R.string.part_price, Utils.getFinalCashValue(totalPrice));
-
     }
+
+    @Override
+    public void getAccessoriesList(List<AccessoriesInfo> responses) {
+        if (responses != null && responses.size() > 0) {
+            clAccessory.setVisibility(View.VISIBLE);
+            mAccessoryAdapter.clear();
+            for (AccessoriesInfo accessoriesInfo : responses
+            ) {
+                mAccessoryAdapter.addItem(accessoriesInfo);
+            }
+            mAccessoryAdapter.notifyDataSetChanged();
+        } else {
+            clAccessory.setVisibility(View.GONE);
+        }
+    }
+
+    private String getTxtContent(String strContent) {
+        return TextUtils.isEmpty(strContent) ? getString(R.string.empty_data) : strContent;
+    }
+
 }

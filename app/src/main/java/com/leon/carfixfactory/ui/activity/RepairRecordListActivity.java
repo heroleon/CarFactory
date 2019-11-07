@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.leon.carfixfactory.R;
-import com.leon.carfixfactory.bean.CarInfo;
+import com.leon.carfixfactory.bean.DriverInfo;
 import com.leon.carfixfactory.contract.RepairRecordContact;
 import com.leon.carfixfactory.presenter.RepairRecordImp;
 import com.leon.carfixfactory.ui.adapter.RepairRecordAdapter;
@@ -69,7 +69,7 @@ public class RepairRecordListActivity extends BaseActivity<RepairRecordImp> impl
     }
 
     @Override
-    public void getRepairRecordSuccess(List<CarInfo> responses) {
+    public void getRepairRecordSuccess(List<DriverInfo> responses) {
         if (responses != null && responses.size() > 0) {
             mAdapter.updateWithClear(responses);
         }

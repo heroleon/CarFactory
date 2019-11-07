@@ -1,5 +1,6 @@
 package com.leon.carfixfactory.contract;
 
+import com.leon.carfixfactory.bean.AccessoriesInfo;
 import com.leon.carfixfactory.bean.CarPartsInfo;
 import com.leon.carfixfactory.bean.HomeData;
 import com.leon.carfixfactory.ui.view.IBaseView;
@@ -15,9 +16,13 @@ import java.util.List;
 public class OrderConfirmContact {
     public interface ViewOrderConfirm extends IBaseView {
         void getCarPartsList(List<CarPartsInfo> responses);
+
+        void getAccessoriesList(List<AccessoriesInfo> responses);
     }
 
     public interface IOrderConfirmPresenter {
-        void getPartsList(Long carId);
+        void getPartsList(Long repairId);
+
+        void getAccessoryList(Long repairId);
     }
 }

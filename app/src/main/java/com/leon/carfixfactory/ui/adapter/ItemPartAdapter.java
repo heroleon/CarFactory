@@ -5,6 +5,7 @@ import android.content.res.Resources;
 
 import com.leon.carfixfactory.R;
 import com.leon.carfixfactory.bean.CarPartsInfo;
+import com.leon.carfixfactory.contract.RepairRecordContact;
 import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerAdapter;
 import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerHolder;
 
@@ -14,7 +15,7 @@ import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerHolder;
  * Time: 10:39
  * Desc:清单列表
  */
-public class ItemPartAdapter extends BaseRecyclerAdapter<CarPartsInfo> {
+public class ItemPartAdapter extends BaseRecyclerAdapter<RepairRecordContact.DialogContentObtain> {
     private Resources res;
 
     public ItemPartAdapter(Context context, int itemLayoutId) {
@@ -23,9 +24,9 @@ public class ItemPartAdapter extends BaseRecyclerAdapter<CarPartsInfo> {
     }
 
     @Override
-    public void convert(BaseRecyclerHolder holder, CarPartsInfo item, int position) {
-        holder.setText(R.id.tv_part_name, item.partName);
-        holder.setText(R.id.tv_part_count, String.format(res.getString(R.string.part_count), item.partCount));
-        holder.setText(R.id.tv_part_price, String.format(res.getString(R.string.part_price), item.partPrice));
+    public void convert(BaseRecyclerHolder holder, RepairRecordContact.DialogContentObtain item, int position) {
+        holder.setText(R.id.tv_part_name, item.getFirstContent());
+        holder.setText(R.id.tv_part_count, String.format(res.getString(R.string.part_count), item.getThirdContent()));
+        holder.setText(R.id.tv_part_price, String.format(res.getString(R.string.part_price), item.getSecondContent()));
     }
 }

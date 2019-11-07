@@ -25,6 +25,10 @@ public class ContentViewSetting {
         }});
     }
 
+    public static AppCompatEditText getEditText(View view) {
+        return view.findViewById(R.id.et_content);
+    }
+
     public static String getEditTextContent(View view) {
         AppCompatEditText etContent = view.findViewById(R.id.et_content);
         return etContent.getText() == null ? null : etContent.getText().toString();

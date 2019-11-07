@@ -9,8 +9,11 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.io.Serializable;
+
 @Entity
-public class WorkerInfo {
+public class WorkerInfo implements Serializable {
+    private static final long serialVersionUID = -742345592195937103L;
     @Id(autoincrement = true)
     public Long workerId;
     public String avatarPath;
@@ -21,7 +24,7 @@ public class WorkerInfo {
 
     @Generated(hash = 1707038715)
     public WorkerInfo(Long workerId, String avatarPath, String workerName,
-            String workerBirthDay, String workerPhone, String workerAddress) {
+                      String workerBirthDay, String workerPhone, String workerAddress) {
         this.workerId = workerId;
         this.avatarPath = avatarPath;
         this.workerName = workerName;

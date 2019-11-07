@@ -24,6 +24,8 @@ public class WorkerManageActivity extends BaseActivity<WorkerManageImp> implemen
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private WorkerManageAdapter mAdapter;
+    public static final String WORKER_INFO = "worker_info";
+
 
     @Override
     protected void initPresenter(Intent intent) {
@@ -49,7 +51,7 @@ public class WorkerManageActivity extends BaseActivity<WorkerManageImp> implemen
             public void onItemClick(RecyclerView parent, View view, int position) {
                 WorkerInfo workerInfo = mAdapter.getItems(position);
                 Intent intent = new Intent();
-                intent.putExtra("duty_person", workerInfo.getWorkerName());
+                intent.putExtra(WORKER_INFO, workerInfo);
                 setResult(RESULT_OK, intent);
                 finish();
             }

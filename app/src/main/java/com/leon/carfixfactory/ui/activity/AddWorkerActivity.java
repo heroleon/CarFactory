@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.leon.carfixfactory.MyApplication;
 import com.leon.carfixfactory.R;
+import com.leon.carfixfactory.bean.DriverInfo;
 import com.leon.carfixfactory.bean.ItemEditContent;
 import com.leon.carfixfactory.bean.WorkerInfo;
 import com.leon.carfixfactory.contract.ItemEditTextContact;
@@ -116,6 +117,11 @@ public class AddWorkerActivity extends BaseActivity<EditContentImp> implements I
         for (int i = 0; i < responses.size(); i++) {
             ContentViewSetting.setItemContent(views[i], responses.get(i));
         }
+    }
+
+    @Override
+    public void existData(DriverInfo driverInfo) {
+
     }
 
     @Override
