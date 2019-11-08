@@ -27,16 +27,17 @@ public class RepairRecordDao extends AbstractDao<RepairRecord, Long> {
         public final static Property RepairId = new Property(0, Long.class, "repairId", true, "_id");
         public final static Property DriverId = new Property(1, Long.class, "driverId", false, "DRIVER_ID");
         public final static Property RepairOrderId = new Property(2, String.class, "repairOrderId", false, "REPAIR_ORDER_ID");
-        public final static Property ArrivalTime = new Property(3, long.class, "arrivalTime", false, "ARRIVAL_TIME");
-        public final static Property DeliveryTime = new Property(4, long.class, "deliveryTime", false, "DELIVERY_TIME");
-        public final static Property RepairMileage = new Property(5, String.class, "repairMileage", false, "REPAIR_MILEAGE");
-        public final static Property RepairTotalFee = new Property(6, String.class, "repairTotalFee", false, "REPAIR_TOTAL_FEE");
-        public final static Property RepairDesc = new Property(7, String.class, "repairDesc", false, "REPAIR_DESC");
-        public final static Property TotalPartFee = new Property(8, String.class, "totalPartFee", false, "TOTAL_PART_FEE");
-        public final static Property TotalAccessoryFee = new Property(9, String.class, "totalAccessoryFee", false, "TOTAL_ACCESSORY_FEE");
-        public final static Property RepairState = new Property(10, int.class, "repairState", false, "REPAIR_STATE");
-        public final static Property DutyPersonName = new Property(11, String.class, "dutyPersonName", false, "DUTY_PERSON_NAME");
-        public final static Property DutyPersonId = new Property(12, String.class, "dutyPersonId", false, "DUTY_PERSON_ID");
+        public final static Property NumberPlate = new Property(3, String.class, "numberPlate", false, "NUMBER_PLATE");
+        public final static Property ArrivalTime = new Property(4, long.class, "arrivalTime", false, "ARRIVAL_TIME");
+        public final static Property DeliveryTime = new Property(5, long.class, "deliveryTime", false, "DELIVERY_TIME");
+        public final static Property RepairMileage = new Property(6, String.class, "repairMileage", false, "REPAIR_MILEAGE");
+        public final static Property RepairTotalFee = new Property(7, String.class, "repairTotalFee", false, "REPAIR_TOTAL_FEE");
+        public final static Property RepairDesc = new Property(8, String.class, "repairDesc", false, "REPAIR_DESC");
+        public final static Property TotalPartFee = new Property(9, String.class, "totalPartFee", false, "TOTAL_PART_FEE");
+        public final static Property TotalAccessoryFee = new Property(10, String.class, "totalAccessoryFee", false, "TOTAL_ACCESSORY_FEE");
+        public final static Property RepairState = new Property(11, int.class, "repairState", false, "REPAIR_STATE");
+        public final static Property DutyPersonName = new Property(12, String.class, "dutyPersonName", false, "DUTY_PERSON_NAME");
+        public final static Property DutyPersonId = new Property(13, String.class, "dutyPersonId", false, "DUTY_PERSON_ID");
     }
 
 
@@ -55,16 +56,17 @@ public class RepairRecordDao extends AbstractDao<RepairRecord, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: repairId
                 "\"DRIVER_ID\" INTEGER," + // 1: driverId
                 "\"REPAIR_ORDER_ID\" TEXT," + // 2: repairOrderId
-                "\"ARRIVAL_TIME\" INTEGER NOT NULL ," + // 3: arrivalTime
-                "\"DELIVERY_TIME\" INTEGER NOT NULL ," + // 4: deliveryTime
-                "\"REPAIR_MILEAGE\" TEXT," + // 5: repairMileage
-                "\"REPAIR_TOTAL_FEE\" TEXT," + // 6: repairTotalFee
-                "\"REPAIR_DESC\" TEXT," + // 7: repairDesc
-                "\"TOTAL_PART_FEE\" TEXT," + // 8: totalPartFee
-                "\"TOTAL_ACCESSORY_FEE\" TEXT," + // 9: totalAccessoryFee
-                "\"REPAIR_STATE\" INTEGER NOT NULL ," + // 10: repairState
-                "\"DUTY_PERSON_NAME\" TEXT," + // 11: dutyPersonName
-                "\"DUTY_PERSON_ID\" TEXT);"); // 12: dutyPersonId
+                "\"NUMBER_PLATE\" TEXT," + // 3: numberPlate
+                "\"ARRIVAL_TIME\" INTEGER NOT NULL ," + // 4: arrivalTime
+                "\"DELIVERY_TIME\" INTEGER NOT NULL ," + // 5: deliveryTime
+                "\"REPAIR_MILEAGE\" TEXT," + // 6: repairMileage
+                "\"REPAIR_TOTAL_FEE\" TEXT," + // 7: repairTotalFee
+                "\"REPAIR_DESC\" TEXT," + // 8: repairDesc
+                "\"TOTAL_PART_FEE\" TEXT," + // 9: totalPartFee
+                "\"TOTAL_ACCESSORY_FEE\" TEXT," + // 10: totalAccessoryFee
+                "\"REPAIR_STATE\" INTEGER NOT NULL ," + // 11: repairState
+                "\"DUTY_PERSON_NAME\" TEXT," + // 12: dutyPersonName
+                "\"DUTY_PERSON_ID\" TEXT);"); // 13: dutyPersonId
     }
 
     /** Drops the underlying database table. */
@@ -91,43 +93,48 @@ public class RepairRecordDao extends AbstractDao<RepairRecord, Long> {
         if (repairOrderId != null) {
             stmt.bindString(3, repairOrderId);
         }
-        stmt.bindLong(4, entity.getArrivalTime());
-        stmt.bindLong(5, entity.getDeliveryTime());
+ 
+        String numberPlate = entity.getNumberPlate();
+        if (numberPlate != null) {
+            stmt.bindString(4, numberPlate);
+        }
+        stmt.bindLong(5, entity.getArrivalTime());
+        stmt.bindLong(6, entity.getDeliveryTime());
  
         String repairMileage = entity.getRepairMileage();
         if (repairMileage != null) {
-            stmt.bindString(6, repairMileage);
+            stmt.bindString(7, repairMileage);
         }
  
         String repairTotalFee = entity.getRepairTotalFee();
         if (repairTotalFee != null) {
-            stmt.bindString(7, repairTotalFee);
+            stmt.bindString(8, repairTotalFee);
         }
  
         String repairDesc = entity.getRepairDesc();
         if (repairDesc != null) {
-            stmt.bindString(8, repairDesc);
+            stmt.bindString(9, repairDesc);
         }
  
         String totalPartFee = entity.getTotalPartFee();
         if (totalPartFee != null) {
-            stmt.bindString(9, totalPartFee);
+            stmt.bindString(10, totalPartFee);
         }
  
         String totalAccessoryFee = entity.getTotalAccessoryFee();
         if (totalAccessoryFee != null) {
-            stmt.bindString(10, totalAccessoryFee);
+            stmt.bindString(11, totalAccessoryFee);
         }
-        stmt.bindLong(11, entity.getRepairState());
+        stmt.bindLong(12, entity.getRepairState());
  
         String dutyPersonName = entity.getDutyPersonName();
         if (dutyPersonName != null) {
-            stmt.bindString(12, dutyPersonName);
+            stmt.bindString(13, dutyPersonName);
         }
  
         String dutyPersonId = entity.getDutyPersonId();
         if (dutyPersonId != null) {
-            stmt.bindString(13, dutyPersonId);
+            stmt.bindString(14, dutyPersonId);
         }
     }
 
@@ -149,43 +156,48 @@ public class RepairRecordDao extends AbstractDao<RepairRecord, Long> {
         if (repairOrderId != null) {
             stmt.bindString(3, repairOrderId);
         }
-        stmt.bindLong(4, entity.getArrivalTime());
-        stmt.bindLong(5, entity.getDeliveryTime());
+ 
+        String numberPlate = entity.getNumberPlate();
+        if (numberPlate != null) {
+            stmt.bindString(4, numberPlate);
+        }
+        stmt.bindLong(5, entity.getArrivalTime());
+        stmt.bindLong(6, entity.getDeliveryTime());
  
         String repairMileage = entity.getRepairMileage();
         if (repairMileage != null) {
-            stmt.bindString(6, repairMileage);
+            stmt.bindString(7, repairMileage);
         }
  
         String repairTotalFee = entity.getRepairTotalFee();
         if (repairTotalFee != null) {
-            stmt.bindString(7, repairTotalFee);
+            stmt.bindString(8, repairTotalFee);
         }
  
         String repairDesc = entity.getRepairDesc();
         if (repairDesc != null) {
-            stmt.bindString(8, repairDesc);
+            stmt.bindString(9, repairDesc);
         }
  
         String totalPartFee = entity.getTotalPartFee();
         if (totalPartFee != null) {
-            stmt.bindString(9, totalPartFee);
+            stmt.bindString(10, totalPartFee);
         }
  
         String totalAccessoryFee = entity.getTotalAccessoryFee();
         if (totalAccessoryFee != null) {
-            stmt.bindString(10, totalAccessoryFee);
+            stmt.bindString(11, totalAccessoryFee);
         }
-        stmt.bindLong(11, entity.getRepairState());
+        stmt.bindLong(12, entity.getRepairState());
  
         String dutyPersonName = entity.getDutyPersonName();
         if (dutyPersonName != null) {
-            stmt.bindString(12, dutyPersonName);
+            stmt.bindString(13, dutyPersonName);
         }
  
         String dutyPersonId = entity.getDutyPersonId();
         if (dutyPersonId != null) {
-            stmt.bindString(13, dutyPersonId);
+            stmt.bindString(14, dutyPersonId);
         }
     }
 
@@ -200,16 +212,17 @@ public class RepairRecordDao extends AbstractDao<RepairRecord, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // repairId
             cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // driverId
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // repairOrderId
-            cursor.getLong(offset + 3), // arrivalTime
-            cursor.getLong(offset + 4), // deliveryTime
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // repairMileage
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // repairTotalFee
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // repairDesc
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // totalPartFee
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // totalAccessoryFee
-            cursor.getInt(offset + 10), // repairState
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // dutyPersonName
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // dutyPersonId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // numberPlate
+            cursor.getLong(offset + 4), // arrivalTime
+            cursor.getLong(offset + 5), // deliveryTime
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // repairMileage
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // repairTotalFee
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // repairDesc
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // totalPartFee
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // totalAccessoryFee
+            cursor.getInt(offset + 11), // repairState
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // dutyPersonName
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // dutyPersonId
         );
         return entity;
     }
@@ -219,16 +232,17 @@ public class RepairRecordDao extends AbstractDao<RepairRecord, Long> {
         entity.setRepairId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setDriverId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
         entity.setRepairOrderId(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setArrivalTime(cursor.getLong(offset + 3));
-        entity.setDeliveryTime(cursor.getLong(offset + 4));
-        entity.setRepairMileage(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setRepairTotalFee(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setRepairDesc(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setTotalPartFee(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setTotalAccessoryFee(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setRepairState(cursor.getInt(offset + 10));
-        entity.setDutyPersonName(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setDutyPersonId(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setNumberPlate(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setArrivalTime(cursor.getLong(offset + 4));
+        entity.setDeliveryTime(cursor.getLong(offset + 5));
+        entity.setRepairMileage(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setRepairTotalFee(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setRepairDesc(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setTotalPartFee(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setTotalAccessoryFee(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setRepairState(cursor.getInt(offset + 11));
+        entity.setDutyPersonName(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setDutyPersonId(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
      }
     
     @Override

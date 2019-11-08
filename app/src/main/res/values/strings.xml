@@ -65,6 +65,7 @@
     <string name="car_card_content">车牌号码:\u3000%1$s</string>
     <string name="car_driver_name_content">车主姓名:\u3000%1$s</string>
     <string name="car_driver_phone_content">车主电话:\u3000%1$s</string>
+    <string name="car_repair_order_id">维修单号:\u3000%1$s</string>
     <string name="car_accept_time">接车时间:\u3000%1$s</string>
     <string name="repair_detail">维修明细</string>
     <string name="car_duty_person_content">维修责任人:\u3000%1$s</string>
@@ -85,4 +86,9 @@
     <string name="notify_add_part">你尚未添加维修项目</string>
     <string name="repair_accessory">维修配件</string>
     <string name="empty_data">暂无数据</string>
+    <string name="title_repair_car">车辆记录</string>
+    <string name="delivery_car">交车</string>
+    <string name="edit">编辑</string>
+    <string name="btn_repair">维修</string>
+    <string name="title_driver_info">客户关系</string>
 </resources>

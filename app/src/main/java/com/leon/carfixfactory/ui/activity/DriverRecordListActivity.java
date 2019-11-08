@@ -18,7 +18,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 
-public class RepairRecordListActivity extends BaseActivity<RepairRecordImp> implements RepairRecordContact.ViewRepairRecord {
+public class DriverRecordListActivity extends BaseActivity<RepairRecordImp> implements RepairRecordContact.ViewRepairRecord {
 
     @Bind(R.id.tv_title)
     TextView tvTitle;
@@ -48,7 +48,7 @@ public class RepairRecordListActivity extends BaseActivity<RepairRecordImp> impl
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Intent intent = new Intent(RepairRecordListActivity.this, RepairDetailActivity.class);
+                Intent intent = new Intent(DriverRecordListActivity.this, RepairListActivity.class);
                 intent.putExtra(RepairDetailActivity.CAR_INFO, mAdapter.getItems(position));
                 startActivity(intent);
             }
@@ -56,7 +56,7 @@ public class RepairRecordListActivity extends BaseActivity<RepairRecordImp> impl
     }
 
     private void initTile() {
-        tvTitle.setText(getString(R.string.title_repair_record));
+        tvTitle.setText(getString(R.string.title_driver_info));
     }
 
     @OnClick({R.id.iv_back})

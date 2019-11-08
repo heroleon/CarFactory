@@ -75,6 +75,7 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
 
     private AccessoriesInfoDao accessoryDao;
     private WorkerInfo workerInfo;
+    private String repairOrderId;
 
     @Override
     protected void initPresenter() {
@@ -89,6 +90,7 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
     protected void initView(View view, Bundle savedInstanceState) {
         initAccessoriseRecyclerView();
         initPartRecyclerView();
+        repairOrderId = String.format("%s%s", "WX", String.valueOf(System.currentTimeMillis()));
         carPartDao = MyApplication.getApplication().getDaoSession().getCarPartsInfoDao();
         accessoryDao = MyApplication.getApplication().getDaoSession().getAccessoriesInfoDao();
     }
@@ -128,6 +130,7 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
             CarPartsInfo carPartsInfo = (CarPartsInfo) partList.get(i);
             totalPartPrice += Double.valueOf(carPartsInfo.workTime) * Double.valueOf(carPartsInfo.partPrice);
         }
+        repairRecord.repairOrderId = repairOrderId;
         repairRecord.totalPartFee = Utils.getFinalCashValue(totalPartPrice);
         if (mAccessoriesAdapter.getItemCount() > 0) {
             List accessoryList = mAccessoriesAdapter.getList();

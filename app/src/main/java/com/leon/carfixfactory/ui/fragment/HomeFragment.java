@@ -10,7 +10,8 @@ import com.leon.carfixfactory.bean.HomeData;
 import com.leon.carfixfactory.contract.HomeContact;
 import com.leon.carfixfactory.presenter.HomeDataPresenterImp;
 import com.leon.carfixfactory.ui.activity.MaintenanceRecordActivity;
-import com.leon.carfixfactory.ui.activity.RepairRecordListActivity;
+import com.leon.carfixfactory.ui.activity.RepairListActivity;
+import com.leon.carfixfactory.ui.activity.DriverRecordListActivity;
 import com.leon.carfixfactory.ui.activity.WorkerManageActivity;
 import com.leon.carfixfactory.ui.adapter.HomeAdapter;
 import com.leon.carfixfactory.ui.custom.NoScrollGridLayoutManager;
@@ -76,7 +77,7 @@ public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_repair_record:
-                Intent intent = new Intent(getActivity(), RepairRecordListActivity.class);
+                Intent intent = new Intent(getActivity(), RepairListActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -100,7 +101,8 @@ public class HomeFragment extends BaseFragment<HomeDataPresenterImp> implements 
                 showToast("暂未开发，开发中...");
                 break;
             case 4:
-                showToast("暂未开发，开发中...");
+                intent = new Intent(getActivity(), DriverRecordListActivity.class);
+                startActivity(intent);
                 break;
             case 5:
                 intent = new Intent(getActivity(), WorkerManageActivity.class);

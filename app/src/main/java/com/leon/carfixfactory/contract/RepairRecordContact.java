@@ -1,6 +1,7 @@
 package com.leon.carfixfactory.contract;
 
 import com.leon.carfixfactory.bean.DriverInfo;
+import com.leon.carfixfactory.bean.RepairRecord;
 import com.leon.carfixfactory.ui.view.IBaseView;
 
 import java.util.List;
@@ -22,4 +23,11 @@ public interface RepairRecordContact {
         String getThirdContent();
 
     }
+
+
+    interface  ViewRepairListView extends IBaseView{
+        void getRepairRecordSuccess(List<RepairRecord> responses);
+    }
+
+
 }

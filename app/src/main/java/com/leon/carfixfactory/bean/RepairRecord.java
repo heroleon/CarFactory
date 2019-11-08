@@ -16,6 +16,7 @@ public class RepairRecord {
     public Long repairId;
     public Long driverId;
     public String repairOrderId;
+    public String numberPlate;
 
     public long arrivalTime;        //进场时间
     public long deliveryTime;      //交车时间
@@ -37,15 +38,16 @@ public class RepairRecord {
     public RepairRecord() {
     }
 
-    @Generated(hash = 1834564341)
+    @Generated(hash = 1536282064)
     public RepairRecord(Long repairId, Long driverId, String repairOrderId,
-                        long arrivalTime, long deliveryTime, String repairMileage,
-                        String repairTotalFee, String repairDesc, String totalPartFee,
-                        String totalAccessoryFee, int repairState, String dutyPersonName,
-                        String dutyPersonId) {
+            String numberPlate, long arrivalTime, long deliveryTime, String repairMileage,
+            String repairTotalFee, String repairDesc, String totalPartFee,
+            String totalAccessoryFee, int repairState, String dutyPersonName,
+            String dutyPersonId) {
         this.repairId = repairId;
         this.driverId = driverId;
         this.repairOrderId = repairOrderId;
+        this.numberPlate = numberPlate;
         this.arrivalTime = arrivalTime;
         this.deliveryTime = deliveryTime;
         this.repairMileage = repairMileage;
@@ -160,6 +162,14 @@ public class RepairRecord {
 
     public void setTotalAccessoryFee(String totalAccessoryFee) {
         this.totalAccessoryFee = totalAccessoryFee;
+    }
+
+    public String getNumberPlate() {
+        return this.numberPlate;
+    }
+
+    public void setNumberPlate(String numberPlate) {
+        this.numberPlate = numberPlate;
     }
 
 

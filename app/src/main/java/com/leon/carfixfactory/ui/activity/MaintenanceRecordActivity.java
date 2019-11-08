@@ -202,6 +202,7 @@ public class MaintenanceRecordActivity extends BaseActivity {
                             driverInfoDao.insert(driverInfo);
                         }
                         repairRecord.driverId = driverInfo.driverId;
+                        repairRecord.numberPlate = driverInfo.numberPlate;
                         repairRecordDao.insertOrReplace(repairRecord);
                         maintenanceRecordFragment.initRepairInfo(repairRecord);
                     }

@@ -20,6 +20,9 @@ import butterknife.ButterKnife;
 
 public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     protected P mPresenter;
+    private boolean isVisible;
+    private boolean isInitView;
+
     //初始化Presenter
     protected abstract void initPresenter();
 
@@ -50,6 +53,8 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
         initPresenter();
         checkPresenterIsNull();
         initView(view, savedInstanceState);
+        isInitView = true;
+        isCanLoadData();
         return view;
     }
 
@@ -59,7 +64,34 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
         }
     }
 
-    public void showToast(String text){
-        ZToast.makeText(mActivity, text,1000).show();
+    public void showToast(String text) {
+        ZToast.makeText(mActivity, text, 1000).show();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        //isVisibleToUser这个boolean值表示:该Fragment的UI 用户是否可见，获取该标志记录下来
+        if (isVisibleToUser) {
+            isVisible = true;
+            isCanLoadData();
+        } else {
+            isVisible = false;
+        }
+    }
+
+    private void isCanLoadData() {
+        //所以条件是view初始化完成并且对用户可见
+        if (isInitView && isVisible) {
+            lazyLoad();
+            //防止重复加载数据
+            //isInitView = false;
+            isVisible = false;
+        }
+    }
+
+    protected void lazyLoad() {
+
     }
 }
