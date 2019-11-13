@@ -66,9 +66,9 @@
     <string name="car_driver_name_content">车主姓名:\u3000%1$s</string>
     <string name="car_driver_phone_content">车主电话:\u3000%1$s</string>
     <string name="car_repair_order_id">维修单号:\u3000%1$s</string>
-    <string name="car_accept_time">接车时间:\u3000%1$s</string>
+    <string name="car_accept_time">进厂日期:\u3000%1$s</string>
     <string name="repair_detail">维修明细</string>
-    <string name="car_duty_person_content">维修责任人:\u3000%1$s</string>
+    <string name="car_duty_person_content">维修人员:\u3000%1$s</string>
     <string name="car_repair_mileage">维修里程:\u3000%1$s</string>
     <string name="car_repair_time_content">维修工时:\u3000%1$s</string>
     <string name="car_repair_fee_content">工时费用:\u3000%1$s</string>
@@ -91,4 +91,13 @@
     <string name="edit">编辑</string>
     <string name="btn_repair">维修</string>
     <string name="title_driver_info">客户关系</string>
+    <string name="repair_state">维修状态</string>
+    <string name="repair_order_id">维修单号:\u3000%1$s</string>
+    <string name="car_card_type">车\u3000\u3000型:\u3000%1$s</string>
+    <string name="car_card_frame_num">车\u0020\u0020\u0020架\u0020\u0020号:\u3000%1$s</string>
+    <string name="car_card_engine_num">发动机号:\u3000%1$s</string>
+    <string name="state_wait_repair">待维修</string>
+    <string name="state_repairing">维修中</string>
+    <string name="state_delivery">已交车</string>
+    <string name="car_delivery_time">交车日期:\u3000%1$s</string>
 </resources>

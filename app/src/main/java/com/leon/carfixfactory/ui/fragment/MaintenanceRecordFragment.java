@@ -46,7 +46,8 @@ import butterknife.OnClick;
 import static android.app.Activity.RESULT_OK;
 import static com.leon.carfixfactory.ui.activity.WorkerManageActivity.WORKER_INFO;
 
-public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> implements ItemEditTextContact.ViewEditContent {
+public class
+MaintenanceRecordFragment extends BaseFragment<EditContentImp> implements ItemEditTextContact.ViewEditContent {
 
     private static final int DUTY_PERSON = 1000;
 
@@ -131,7 +132,7 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
             totalPartPrice += Double.valueOf(carPartsInfo.workTime) * Double.valueOf(carPartsInfo.partPrice);
         }
         repairRecord.repairOrderId = repairOrderId;
-        repairRecord.totalPartFee = Utils.getFinalCashValue(totalPartPrice);
+        repairRecord.totalPartFee = totalPartPrice == 0 ? "0" : Utils.getFinalCashValue(totalPartPrice);
         if (mAccessoriesAdapter.getItemCount() > 0) {
             List accessoryList = mAccessoriesAdapter.getList();
 
@@ -139,11 +140,12 @@ public class MaintenanceRecordFragment extends BaseFragment<EditContentImp> impl
                 AccessoriesInfo accessoriesInfo = (AccessoriesInfo) accessoryList.get(i);
                 totalAccessoryPrice += accessoriesInfo.accessoryCount * Double.valueOf(accessoriesInfo.accessoryPrice);
             }
-            repairRecord.totalAccessoryFee = Utils.getFinalCashValue(totalAccessoryPrice);
+            repairRecord.totalAccessoryFee = totalAccessoryPrice == 0 ? "0" : Utils.getFinalCashValue(totalAccessoryPrice);
         } else {
             repairRecord.totalAccessoryFee = null;
         }
-        repairRecord.repairTotalFee = Utils.getFinalCashValue(totalAccessoryPrice + totalPartPrice);
+        double totalFee = totalAccessoryPrice + totalPartPrice;
+        repairRecord.repairTotalFee = totalFee == 0 ? "0" : Utils.getFinalCashValue(totalFee);
 
         repairRecord.repairDesc = maintenanceContent.getEditText();
         repairRecord.dutyPersonName = workerInfo != null ? workerInfo.workerName : "";

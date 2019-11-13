@@ -1,9 +1,11 @@
 package com.leon.carfixfactory.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.leon.carfixfactory.MyApplication;
 import com.leon.carfixfactory.R;
@@ -11,7 +13,9 @@ import com.leon.carfixfactory.bean.RepairRecord;
 import com.leon.carfixfactory.beanDao.RepairRecordDao;
 import com.leon.carfixfactory.contract.RepairRecordContact;
 import com.leon.carfixfactory.presenter.RepairListImp;
+import com.leon.carfixfactory.ui.activity.RepairDetailActivity;
 import com.leon.carfixfactory.ui.adapter.RepairListAdapter;
+import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerAdapter;
 
 import java.util.List;
 
@@ -38,7 +42,13 @@ public class BaseRepairFragment extends BaseFragment<RepairListImp> implements R
 
     @Override
     protected void lazyLoad() {
-        mPresenter.getRepairList(isDelivery);
+        refreshData();
+    }
+
+    public void refreshData() {
+        if (mPresenter != null) {
+            mPresenter.getRepairList(isDelivery);
+        }
     }
 
     @Override
@@ -57,12 +67,22 @@ public class BaseRepairFragment extends BaseFragment<RepairListImp> implements R
 
             @Override
             public void secondBtnClick(int position) {
-
+                //TODO 编辑
             }
 
             @Override
             public void thirdBtnClick(int position) {
                 changeRepairState(position, 1);
+            }
+        });
+
+
+        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                Intent intent = new Intent(getActivity(), RepairDetailActivity.class);
+                intent.putExtra(RepairDetailActivity.REPAIR_RECORD, mAdapter.getList().get(position));
+                startActivity(intent);
             }
         });
     }

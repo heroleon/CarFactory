@@ -155,6 +155,11 @@ public class ConfirmOrderFragment extends BaseFragment<OderConfirmPresenter> imp
         }
     }
 
+    @Override
+    public void getDriverInfoSuccess(DriverInfo driverInfo) {
+
+    }
+
     private String getTxtContent(String strContent) {
         return TextUtils.isEmpty(strContent) ? getString(R.string.empty_data) : strContent;
     }

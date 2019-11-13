@@ -48,9 +48,7 @@ public class DriverRecordListActivity extends BaseActivity<RepairRecordImp> impl
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Intent intent = new Intent(DriverRecordListActivity.this, RepairListActivity.class);
-                intent.putExtra(RepairDetailActivity.CAR_INFO, mAdapter.getItems(position));
-                startActivity(intent);
+
             }
         });
     }

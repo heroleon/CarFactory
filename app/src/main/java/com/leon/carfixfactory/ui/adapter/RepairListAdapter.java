@@ -13,8 +13,9 @@ import com.leon.carfixfactory.utils.DateTimeUtils;
  * Created by leon
  * Date: 2019/11/7
  * Time: 20:13
- * Desc:
+ * Desc:列表适配器
  */
+
 public class RepairListAdapter extends BaseRecyclerAdapter<RepairRecord> {
 
     private OnItemOptionClickListener optionClickListener;

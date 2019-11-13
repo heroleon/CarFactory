@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.leon.carfixfactory.presenter.BasePresenter;
 import com.leon.carfixfactory.ui.activity.BaseFragmentActivity;
@@ -71,7 +72,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-
         //isVisibleToUser这个boolean值表示:该Fragment的UI 用户是否可见，获取该标志记录下来
         if (isVisibleToUser) {
             isVisible = true;

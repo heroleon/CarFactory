@@ -14,7 +14,7 @@ import com.leon.carfixfactory.ui.adapter.base.BaseRecyclerHolder;
  * Created by leon
  * Date: 2019/9/20
  * Time: 14:48
- * Desc:
+ * Desc: 维修项目适配器
  */
 public class CarPartsAdapter extends BaseRecyclerAdapter<RepairRecordContact.DialogContentObtain> {
     private Resources res;

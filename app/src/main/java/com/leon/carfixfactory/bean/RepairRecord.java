@@ -1,8 +1,14 @@
 package com.leon.carfixfactory.bean;
 
+import android.content.Context;
+
+import com.leon.carfixfactory.R;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+
+import java.io.Serializable;
 
 /**
  * Created by leon
@@ -11,7 +17,9 @@ import org.greenrobot.greendao.annotation.Generated;
  * Desc:维修记录
  */
 @Entity
-public class RepairRecord {
+public class RepairRecord implements Serializable {
+    private static final long serialVersionUID = 6016907103947932131L;
+
     @Id(autoincrement = true)
     public Long repairId;
     public Long driverId;
@@ -21,11 +29,13 @@ public class RepairRecord {
     public long arrivalTime;        //进场时间
     public long deliveryTime;      //交车时间
     public String repairMileage;   //维修里程
-    public String repairTotalFee;
-    public String repairDesc;
 
-    public String totalPartFee;
-    public String totalAccessoryFee;
+
+    public String repairTotalFee;    //维修总价格
+    public String repairDesc;        //维修描述
+
+    public String totalPartFee;       //项目总价格
+    public String totalAccessoryFee;  //配件总价格
 
     public int repairState = 0;        //0未维修 1已维修 2已交车
 
@@ -40,10 +50,10 @@ public class RepairRecord {
 
     @Generated(hash = 1536282064)
     public RepairRecord(Long repairId, Long driverId, String repairOrderId,
-            String numberPlate, long arrivalTime, long deliveryTime, String repairMileage,
-            String repairTotalFee, String repairDesc, String totalPartFee,
-            String totalAccessoryFee, int repairState, String dutyPersonName,
-            String dutyPersonId) {
+                        String numberPlate, long arrivalTime, long deliveryTime, String repairMileage,
+                        String repairTotalFee, String repairDesc, String totalPartFee,
+                        String totalAccessoryFee, int repairState, String dutyPersonName,
+                        String dutyPersonId) {
         this.repairId = repairId;
         this.driverId = driverId;
         this.repairOrderId = repairOrderId;
@@ -172,5 +182,13 @@ public class RepairRecord {
         this.numberPlate = numberPlate;
     }
 
-
+    public String getRepairState(Context context) {
+        if (repairState == 0) {
+            return context.getString(R.string.state_wait_repair);
+        } else if (repairState == 1) {
+            return context.getString(R.string.state_repairing);
+        } else {
+            return context.getString(R.string.state_delivery);
+        }
+    }
 }

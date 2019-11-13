@@ -23,7 +23,7 @@ import butterknife.OnClick;
  * Created by leon
  * Date: 2019/11/7
  * Time: 19:27
- * Desc:
+ * Desc:维修记录列表
  */
 public class RepairListActivity extends BaseActivity {
     @Bind(R.id.tab)
@@ -51,6 +51,12 @@ public class RepairListActivity extends BaseActivity {
         initSupportToolBar();
         initFragments();
         initViewPager();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((UnDeliveryCarFragment) mFragments.get(0)).refreshData();
     }
 
     private void initFragments() {

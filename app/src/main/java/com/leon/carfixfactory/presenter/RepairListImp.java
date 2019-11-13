@@ -32,10 +32,12 @@ public class RepairListImp extends BasePresenter<RepairRecordContact.ViewRepairL
         if (isDeliveryCar) {
             repairRecords = repairRecordDao.queryBuilder()
                     .where(RepairRecordDao.Properties.RepairState.eq(2))
+                    .orderDesc(RepairRecordDao.Properties.DeliveryTime)
                     .build().list();
         } else {
             repairRecords = repairRecordDao.queryBuilder()
                     .where(RepairRecordDao.Properties.RepairState.lt(2))
+                    .orderDesc(RepairRecordDao.Properties.ArrivalTime)
                     .build().list();
         }
         mView.getRepairRecordSuccess(repairRecords);

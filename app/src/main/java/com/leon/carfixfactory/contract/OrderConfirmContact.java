@@ -2,6 +2,7 @@ package com.leon.carfixfactory.contract;
 
 import com.leon.carfixfactory.bean.AccessoriesInfo;
 import com.leon.carfixfactory.bean.CarPartsInfo;
+import com.leon.carfixfactory.bean.DriverInfo;
 import com.leon.carfixfactory.bean.HomeData;
 import com.leon.carfixfactory.ui.view.IBaseView;
 
@@ -18,6 +19,8 @@ public class OrderConfirmContact {
         void getCarPartsList(List<CarPartsInfo> responses);
 
         void getAccessoriesList(List<AccessoriesInfo> responses);
+
+        void getDriverInfoSuccess(DriverInfo driverInfo);
     }
 
     public interface IOrderConfirmPresenter {
